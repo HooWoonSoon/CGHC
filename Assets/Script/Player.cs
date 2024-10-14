@@ -10,11 +10,13 @@ public class Player : MonoBehaviour
     [Header("Action")]
     public float moveSpeed = 2.5f;
     public float jumpForce = 2.5f;
-    private int maxJumps = 2;
+    public int maxJumps = 1;
+    public int leftJump;
     public float dashSpeed;
     public float dashDuration;
     private bool canDash;
     public bool isDash;
+    private bool canDoubleJump;
     public float dashDirection {  get; private set; }
 
     [Header("Collision")]
@@ -46,7 +48,6 @@ public class Player : MonoBehaviour
     public PlayerDashState dashState { get; private set; }
     public PlayerWallSlideState wallSlideState { get; private set; }
     public PlayerWallJumpState wallJumpState { get; private set; }
-    public PlayerDoubleJumpState doubleJumpState { get; private set; }
     public PlayerPushState pushState { get; private set; }
     public PlayerGravityControlState gravityControlState { get; private set; }
 
@@ -80,7 +81,6 @@ public class Player : MonoBehaviour
         dashState = new PlayerDashState(stateMachine, this, "Dash");
         wallSlideState = new PlayerWallSlideState(stateMachine, this, "WallSlide");
         wallJumpState = new PlayerWallJumpState(stateMachine, this, "Jump");
-        doubleJumpState = new PlayerDoubleJumpState(stateMachine, this, "DoubleJump");
         pushState = new PlayerPushState(stateMachine, this, "Push");
         gravityControlState = new PlayerGravityControlState(stateMachine, this, "Control");
     }
@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         stateMachine.Initialize(idleState);
         pushable = FindObjectOfType<Pushable>();
+        leftJump = maxJumps;
     }
 
     private void Update()
@@ -107,6 +108,18 @@ public class Player : MonoBehaviour
         CollisionBelowAndAbove();
         HorizontalCollision();
         ControlTrigger();
+    }
+
+    public void CheckForJumpCount(bool IsGround)
+    {
+        if (IsGround)
+        {
+            leftJump = maxJumps;
+        }
+        else
+        {
+            leftJump -= 1;
+        }
     }
 
     private void CheckForDashInput()
@@ -239,14 +252,20 @@ public class Player : MonoBehaviour
 
         foreach (var hit in colliders)
         {
-            if (hit.GetComponent<Pushable>() != null)
-            {
-                hitBox = hit.gameObject; 
-                return true; 
+            hitBox = hit.gameObject;
+            Illumination illumination = hit.GetComponentInChildren<Illumination>();
+            if (illumination != null)
+            {    
+                illumination.SlideLight(true);
+                return true;
             }
         }
-
         return false;
+    }
+
+    public void KillPlayer()
+    {
+        Debug.Log("Kill Player");
     }
 
     private void OnDrawGizmos()
@@ -254,57 +273,6 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(controlCheck.position, controlCheckRadius);
     }
 
-    //private void HorizontalCollision()
-    //{
-    //    boundsWidth = Vector2.Distance(boundsMiddleLeft, boundsMiddleRight);
-    //    float speedFactor = Mathf.Abs(rb.velocity.x);
-    //    float minRayLength = skin;
-    //    float maxRayLength = minRayLength * 2;
-    //    float rayLength = Mathf.Lerp(minRayLength, maxRayLength, speedFactor / dashSpeed);
-
-    //    Vector2 startOrigin, endOrigin;
-    //    Vector2 direction;
-
-    //    if (facingRight)
-    //    {
-    //        startOrigin = boundsTopRight;
-    //        endOrigin = boundsBottomRight;
-    //        direction = transform.right;
-    //    }
-    //    else
-    //    {
-    //        startOrigin = boundsTopLeft;
-    //        endOrigin = boundsBottomLeft;
-    //        direction = -transform.right;
-    //    }
-
-    //    isWalled = false; 
-    //    isBox = false; 
-    //    Vector2[] middleRayOrigins = {
-    //    Vector2.Lerp(startOrigin, endOrigin, 0.33f),
-    //    Vector2.Lerp(startOrigin, endOrigin, 0.66f)
-    //};
-
-    //    foreach (var origin in middleRayOrigins)
-    //    {
-    //        RaycastHit2D hit1 = Physics2D.Raycast(origin, direction, rayLength, colliderWithGround);
-    //        RaycastHit2D hit2 = Physics2D.Raycast(origin, direction, rayLength, colliderWithBox);
-
-    //        Debug.DrawRay(origin, direction * rayLength, Color.yellow);
-
-    //        if (hit1)
-    //        {
-    //            isWalled = true;
-    //            break; 
-    //        }
-    //        if (hit2)
-    //        {
-    //            isBox = true;
-    //            hitBox = hit2.collider.gameObject;
-    //            break;
-    //        }
-    //    }
-    //}
     public void Flip()
     {
         facingDirection *= -1;

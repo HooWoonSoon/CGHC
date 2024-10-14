@@ -24,6 +24,7 @@ public class Pushable : MonoBehaviour
     private BoxCollider2D boxcollider;
     #endregion
 
+    public bool isIllumination = false;
     public PointCheck pointCheck;
 
     private void Awake()

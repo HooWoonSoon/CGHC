@@ -33,5 +33,9 @@ public class PlayerAirState : PlayerState
         {
             player.SetVelocity(player.moveSpeed * horizontal, rb.velocity.y);
         }
+        if (player.leftJump > 0 && jump > 0)
+        {
+            stateMachine.ChangeState(player.jumpState);
+        }
     }
 }

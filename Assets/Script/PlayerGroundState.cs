@@ -12,6 +12,7 @@ public class PlayerGroundState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.CheckForJumpCount(true);
     }
 
     public override void Exit()
@@ -27,7 +28,7 @@ public class PlayerGroundState : PlayerState
         {
             stateMachine.ChangeState(player.pushState);
         }
-        if (Input.GetKeyDown(KeyCode.Mouse1) && player.ControlTrigger())
+        if (Input.GetKeyDown(KeyCode.Mouse1) && player.ControlTrigger() == true)
         {
             stateMachine.ChangeState(player.gravityControlState);
         }
@@ -35,7 +36,6 @@ public class PlayerGroundState : PlayerState
         {
             stateMachine.ChangeState(player.airState);
         }
-
         if (jump > 0 && player.isGrounded)
         {
             stateMachine.ChangeState(player.jumpState);
