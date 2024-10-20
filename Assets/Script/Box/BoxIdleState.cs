@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class BoxIdleState : BoxState
 {
-    public BoxIdleState(BoxStateMachine _stateMachine, Pushable _pushable) : base(_stateMachine, _pushable)
+    public BoxIdleState(BoxStateMachine _stateMachine, BoxController _pushable) : base(_stateMachine, _pushable)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.isKinematic = true;
+        rb.velocity = Vector2.zero;
     }
 
     public override void Exit()
@@ -22,5 +23,9 @@ public class BoxIdleState : BoxState
     public override void Update()
     {
         base.Update();
+        if (!boxController.VasicouisDetected() && !boxController.GroundDetected())
+        {
+            stateMachine.ChangeState(boxController.boxAirState);
+        }
     }
 }

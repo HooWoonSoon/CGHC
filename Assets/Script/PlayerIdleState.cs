@@ -22,7 +22,7 @@ public class PlayerIdleState : PlayerGroundState
     public override void Update()
     {
         base.Update();
-        if (horizontal != 0 && !player.isWalled || horizontal == player.facingDirection * -1)
+        if (horizontal != 0 && !player.HorizontalWallDetected() || horizontal == player.facingDirection * -1)
         {
             stateMachine.ChangeState(player.moveState);
         }

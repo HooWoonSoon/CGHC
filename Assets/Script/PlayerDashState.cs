@@ -27,7 +27,7 @@ public class PlayerDashState : PlayerState
     public override void Update()
     {
         base.Update();
-        if (!player.isGrounded && player.isWalled)
+        if (!player.isGrounded && player.HorizontalWallDetected())
         {
             stateMachine.ChangeState(player.wallSlideState);
         }

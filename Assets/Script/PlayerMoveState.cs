@@ -22,7 +22,7 @@ public class PlayerMoveState : PlayerGroundState
     {
         base.Update();
         player.SetVelocity(horizontal * player.moveSpeed, rb.velocity.y);
-        if (horizontal == 0 || player.isWalled)
+        if (horizontal == 0 || player.HorizontalWallDetected())
         {
             stateMachine.ChangeState(player.idleState);
         }

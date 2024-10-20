@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -21,13 +22,15 @@ public class Player : MonoBehaviour
 
     [Header("Collision")]
     [SerializeField] private LayerMask colliderWithGround;
-    public LayerMask colliderWithBox;
     [SerializeField] private int verticalRayAmount = 4;
     [SerializeField] private int horizontalRayAmount = 4;
-    public Transform controlCheck;
-    public float controlCheckRadius;
+    [SerializeField] private Transform gravityControlCheck;
+    [SerializeField] private float gravityControlCheckRadius;
+    [SerializeField] private Transform pushControlCheck;
+    [SerializeField] private float pushCheckDistance;
+    [SerializeField] private Transform exitPushCheck;
+    [SerializeField] private float exitPushDistance;
     
-    public Transform BoxPointTransform;
     public GameObject hitBox;
     public int facingDirection { get; private set; } = 1;
     public bool facingRight { get; private set; } = true;
@@ -36,9 +39,10 @@ public class Player : MonoBehaviour
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
     private CapsuleCollider2D capsulecollider;
-    public Pushable pushable;
     #endregion
     
+    public BoxController boxController { get; private set; }
+    private Illumination illumination;
     #region state
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerIdleState idleState { get; private set; }
@@ -66,7 +70,7 @@ public class Player : MonoBehaviour
     public float skin { get; private set; } = 0.05f;
     public bool isGrounded { get; private set; }
     public bool isFloors { get; private set; }
-    public bool isWalled { get; private set; }
+
     public bool isPushing = false;
     #endregion
 
@@ -91,7 +95,6 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         stateMachine.Initialize(idleState);
-        pushable = FindObjectOfType<Pushable>();
         leftJump = maxJumps;
     }
 
@@ -100,14 +103,10 @@ public class Player : MonoBehaviour
         stateMachine.currentState.Update();
 
         CheckForDashInput();
-    }
-
-    private void FixedUpdate()
-    {
         SetRayOrigins();
         CollisionBelowAndAbove();
-        HorizontalCollision();
-        ControlTrigger();
+        BoxGravityControlDetected();
+        CheckForGraveityControl();
     }
 
     public void CheckForJumpCount(bool IsGround)
@@ -122,9 +121,21 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void CheckForGraveityControl()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1) && BoxGravityControlDetected())
+        {
+            stateMachine.ChangeState(gravityControlState);
+        }
+    }
+
     private void CheckForDashInput()
     {
-        if (isWalled)
+        if (HorizontalWallDetected())
         {
             return;
         }
@@ -148,12 +159,12 @@ public class Player : MonoBehaviour
     {
         stateMachine.currentState.AnimationFinishTrigger();
     }
+
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         rb.velocity = new Vector2(xVelocity, yVelocity);
         FlipController(xVelocity);
     }
-
 
     #region Ray Origin
     private void SetRayOrigins()
@@ -169,6 +180,7 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region Wall And Ground Check
     private void CollisionBelowAndAbove()
     {
         float baseRayLength = Vector2.Distance(boundsMiddleLeft, boundsTopLeft) + skin;
@@ -204,7 +216,7 @@ public class Player : MonoBehaviour
         return isHit;
     }
 
-    private void HorizontalCollision()
+    public bool HorizontalWallDetected()
     {
         boundsWidth = Vector2.Distance(boundsMiddleLeft, boundsMiddleRight);
         float speedFactor = Mathf.Abs(rb.velocity.x);
@@ -228,9 +240,6 @@ public class Player : MonoBehaviour
             direction = -transform.right;
         }
 
-        isWalled = false;
-
-
         for (int i = 0; i < horizontalRayAmount; i++)
         {
             Vector2 rayOrigin = Vector2.Lerp(startOrigin, endOrigin, (float)i / (horizontalRayAmount - 1));
@@ -240,22 +249,37 @@ public class Player : MonoBehaviour
 
             if (hit)
             {
-                isWalled = true;
-                break;
+                return true;
             }
         }
+        return false;
+    }
+    #endregion
+
+    public bool IsBoxDetected() 
+    {
+        RaycastHit2D hit = Physics2D.Raycast(pushControlCheck.position, Vector2.right * facingDirection, pushCheckDistance);
+
+        if (hit.collider.CompareTag("Box"))
+        {
+            hitBox = hit.collider.gameObject;
+            return true;
+        }
+        return false;
     }
 
-    public bool ControlTrigger()
+    public bool ExitForPushDetected() => Physics2D.Raycast(exitPushCheck.position, Vector2.down, exitPushDistance, colliderWithGround);
+
+    public bool BoxGravityControlDetected()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(controlCheck.position, controlCheckRadius, colliderWithBox);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(gravityControlCheck.position, gravityControlCheckRadius);
 
         foreach (var hit in colliders)
         {
-            hitBox = hit.gameObject;
-            Illumination illumination = hit.GetComponentInChildren<Illumination>();
-            if (illumination != null)
-            {    
+            boxController = hit.gameObject.GetComponent<BoxController>();
+            illumination = hit.GetComponentInChildren<Illumination>();
+            if (boxController != null)
+            {
                 illumination.SlideLight(true);
                 return true;
             }
@@ -268,11 +292,7 @@ public class Player : MonoBehaviour
         Debug.Log("Kill Player");
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(controlCheck.position, controlCheckRadius);
-    }
-
+    #region Flip
     public void Flip()
     {
         facingDirection *= -1;
@@ -294,5 +314,12 @@ public class Player : MonoBehaviour
         {
             Flip();
         }
+    }
+    #endregion
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(gravityControlCheck.position, gravityControlCheckRadius);
+        Gizmos.DrawLine(pushControlCheck.position, pushControlCheck.position + Vector3.right * facingDirection * pushCheckDistance);
+        Gizmos.DrawLine(exitPushCheck.position, exitPushCheck.position + Vector3.down * pushCheckDistance);
     }
 }

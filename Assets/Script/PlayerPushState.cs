@@ -32,10 +32,9 @@ public class PlayerPushState : PlayerState
     public override void Update()
     {
         base.Update();
-        if (!player.pushable.IsGrounded())
+        if (!player.boxController.GroundDetected() || !player.ExitForPushDetected())
         {
             stateMachine.ChangeState(player.idleState);
-            player.pushable.rb.bodyType = RigidbodyType2D.Dynamic;
             return;
         }
         player.SetVelocity(horizontal * player.moveSpeed * 0.6f, rb.velocity.y);

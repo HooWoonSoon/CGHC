@@ -13,6 +13,7 @@ public class PlayerState
     private string animBoolName;
     protected float stateTimer;
     protected bool triggerCalled;
+    protected int boxIndex;
     public PlayerState(PlayerStateMachine _stateMachine, Player _player, string _animBoolName)
     {
         this.stateMachine = _stateMachine;

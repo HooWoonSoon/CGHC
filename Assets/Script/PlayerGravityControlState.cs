@@ -11,7 +11,7 @@ public class PlayerGravityControlState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        player.pushable.boxStateMachine.ChangeState(player.pushable.boxWeightlessnessMove);
+        player.boxController.boxStateMachine.ChangeState(player.boxController.boxWeightlessnessMove);
 
         player.SetVelocity(rb.velocity.x, 10);
 

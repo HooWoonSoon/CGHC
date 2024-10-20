@@ -21,7 +21,7 @@ public class PlayerAirState : PlayerState
     public override void Update()
     {
         base.Update();
-        if (player.isWalled)
+        if (player.HorizontalWallDetected())
         {
             stateMachine.ChangeState(player.wallSlideState);
         }

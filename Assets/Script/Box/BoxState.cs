@@ -5,19 +5,19 @@ using UnityEngine;
 public class BoxState
 {
     protected BoxStateMachine stateMachine;
-    protected Pushable pushable;
+    protected BoxController boxController;
     protected Rigidbody2D rb;
 
-    public BoxState(BoxStateMachine _stateMachine, Pushable _pushable)
+    public BoxState(BoxStateMachine _stateMachine, BoxController _pushable)
     {
-        this.pushable = _pushable;
+        this.boxController = _pushable;
         this.stateMachine = _stateMachine;
     }
 
     public virtual void Enter()
     {
+        rb = boxController.rb;
         Debug.Log("I am in" + stateMachine.currentState);
-        rb = pushable.rb;
     }
 
     public virtual void Exit()

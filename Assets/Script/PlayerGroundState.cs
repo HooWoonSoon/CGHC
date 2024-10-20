@@ -24,13 +24,9 @@ public class PlayerGroundState : PlayerState
     {
         base.Update();
    
-        if (Input.GetKeyDown(KeyCode.E) && player.ControlTrigger() == true && player.isPushing == false && player.pushable.IsGrounded())
+        if (Input.GetKeyDown(KeyCode.E) && player.IsBoxDetected() == true && player.isPushing == false && player.boxController.GroundDetected()) 
         {
             stateMachine.ChangeState(player.pushState);
-        }
-        if (Input.GetKeyDown(KeyCode.Mouse1) && player.ControlTrigger() == true)
-        {
-            stateMachine.ChangeState(player.gravityControlState);
         }
         if (!player.isGrounded)
         {
