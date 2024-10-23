@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
 
     [Header("Collision")]
     [SerializeField] private LayerMask colliderWithGround;
+    [SerializeField] private LayerMask colliderWithBox;
     [SerializeField] private int verticalRayAmount = 4;
     [SerializeField] private int horizontalRayAmount = 4;
     [SerializeField] private Transform gravityControlCheck;
@@ -30,8 +31,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float pushCheckDistance;
     [SerializeField] private Transform exitPushCheck;
     [SerializeField] private float exitPushDistance;
-    
+
     public GameObject hitBox;
+    public GameObject ControlEffect;
     public int facingDirection { get; private set; } = 1;
     public bool facingRight { get; private set; } = true;
 
@@ -41,8 +43,10 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D capsulecollider;
     #endregion
     
+    public BoxController previousBox {  get; private set; }
     public BoxController boxController { get; private set; }
-    private Illumination illumination;
+    private BoxManagement boxManagement;
+
     #region state
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerIdleState idleState { get; private set; }
@@ -96,6 +100,8 @@ public class Player : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         stateMachine.Initialize(idleState);
         leftJump = maxJumps;
+        ControlEffect.SetActive(false);
+        boxManagement = FindAnyObjectByType<BoxManagement>();
     }
 
     private void Update()
@@ -106,7 +112,14 @@ public class Player : MonoBehaviour
         SetRayOrigins();
         CollisionBelowAndAbove();
         BoxGravityControlDetected();
-        CheckForGraveityControl();
+        if (BoxGravityControlDetected() == false)
+        {
+            if (previousBox != null)
+            {
+                previousBox.SlideLight(false); // Use to fixed the wicked ASS HOLE, I know this is very stupid!!!
+                previousBox.GravityOrientation(false); // I give up even if GPT also couldn't help
+            }
+        }
     }
 
     public void CheckForJumpCount(bool IsGround)
@@ -118,18 +131,6 @@ public class Player : MonoBehaviour
         else
         {
             leftJump -= 1;
-        }
-    }
-
-    private void CheckForGraveityControl()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-
-        }
-        if (Input.GetKeyUp(KeyCode.Mouse1) && BoxGravityControlDetected())
-        {
-            stateMachine.ChangeState(gravityControlState);
         }
     }
 
@@ -258,9 +259,9 @@ public class Player : MonoBehaviour
 
     public bool IsBoxDetected() 
     {
-        RaycastHit2D hit = Physics2D.Raycast(pushControlCheck.position, Vector2.right * facingDirection, pushCheckDistance);
+        RaycastHit2D hit = Physics2D.Raycast(pushControlCheck.position, Vector2.right * facingDirection, pushCheckDistance, colliderWithBox);
 
-        if (hit.collider.CompareTag("Box"))
+        if (hit)
         {
             hitBox = hit.collider.gameObject;
             return true;
@@ -272,19 +273,29 @@ public class Player : MonoBehaviour
 
     public bool BoxGravityControlDetected()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(gravityControlCheck.position, gravityControlCheckRadius);
-
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(gravityControlCheck.position, gravityControlCheckRadius,colliderWithBox);
+        float minDistance = Mathf.Infinity;
+        boxController = null;
         foreach (var hit in colliders)
         {
-            boxController = hit.gameObject.GetComponent<BoxController>();
-            illumination = hit.GetComponentInChildren<Illumination>();
-            if (boxController != null)
+            float distance = Vector2.Distance(hit.transform.position, this.transform.position);
+            if (distance < minDistance)
             {
-                illumination.SlideLight(true);
-                return true;
+                minDistance = distance;
+                boxController = hit.gameObject.GetComponent<BoxController>();
+                boxController.SlideLight(true);
+            }
+ 
+            if (previousBox != boxController)
+            {
+                if (previousBox != null)
+                {
+                    previousBox.SlideLight(false);
+                }
+                previousBox = boxController;
             }
         }
-        return false;
+        return boxController != null;
     }
 
     public void KillPlayer()

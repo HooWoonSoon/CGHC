@@ -23,7 +23,20 @@ public class PlayerGroundState : PlayerState
     public override void Update()
     {
         base.Update();
-   
+
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            if (player.ControlEffect != null)
+            {
+                player.boxController.GravityOrientation(true);
+                player.ControlEffect.SetActive(true);
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1) && player.BoxGravityControlDetected())
+        {
+            stateMachine.ChangeState(player.gravityControlState);
+            player.boxController.GravityOrientation(false);
+        }
         if (Input.GetKeyDown(KeyCode.E) && player.IsBoxDetected() == true && player.isPushing == false && player.boxController.GroundDetected()) 
         {
             stateMachine.ChangeState(player.pushState);

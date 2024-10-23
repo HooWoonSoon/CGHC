@@ -12,7 +12,6 @@ public class PlayerGravityControlState : PlayerState
     {
         base.Enter();
         player.boxController.boxStateMachine.ChangeState(player.boxController.boxWeightlessnessMove);
-
         player.SetVelocity(rb.velocity.x, 10);
 
         stateTimer = 0.1f;
@@ -21,6 +20,7 @@ public class PlayerGravityControlState : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.ControlEffect.SetActive(false);
     }
 
     public override void Update()

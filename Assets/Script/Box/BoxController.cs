@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class BoxController : MonoBehaviour
@@ -24,6 +26,11 @@ public class BoxController : MonoBehaviour
     #region components
     public Rigidbody2D rb {get; private set;}
     private BoxCollider2D boxcollider;
+    private SpriteRenderer sr;
+    private Material originalMt;
+    [SerializeField] Material changeMt;
+    private Player player;
+    private BoxData boxData;
     #endregion
 
     public bool isIllumination = false;
@@ -43,13 +50,17 @@ public class BoxController : MonoBehaviour
     }
     private void Start()
     {
+        player = FindAnyObjectByType<Player>();
         boxStateMachine.Initialize(boxIdleState);
+        sr = GetComponentInChildren<SpriteRenderer>();
+        originalMt = sr.material;
+        pointer.SetActive(false);
+        boxData = BoxData.instance;
     }
 
     public void Update()
     {
         boxStateMachine.currentState.Update();
-        GravityOrientation();
     }
 
     private void FixedUpdate()
@@ -80,6 +91,9 @@ public class BoxController : MonoBehaviour
         {
             vasicoisChecks[0].transform.position = boundsBottomLeft;
             vasicoisChecks[1].transform.position = boundsBottomRight;
+
+            groundChecks[0].transform.position = boundsBottomLeft; 
+            groundChecks[1].transform.position = boundsBottomRight;
         }
         else if (orentaition == Vector3.up)
         {
@@ -108,6 +122,11 @@ public class BoxController : MonoBehaviour
         return false;
     }
 
+    //public void UpdateDistance(float distance)
+    //{
+    //    boxData.UpdateDistance(distance, boxIndex);
+    //    boxData.CheckList();
+    //}
     public bool VasicouisDetected()
     {
         foreach (Transform check in vasicoisChecks)
@@ -118,8 +137,9 @@ public class BoxController : MonoBehaviour
         return false;
     }
 
-    private void GravityOrientation()
+    public void GravityOrientation(bool Show)
     {
+        pointer.SetActive(Show);
         var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 
@@ -152,6 +172,14 @@ public class BoxController : MonoBehaviour
             }
         }
     }
+
+    public void SlideLight(bool isIlluminate)
+    {
+        if (isIlluminate)
+            sr.material = changeMt;
+        else sr.material = originalMt;
+    }
+
     private void OnDrawGizmos()
     {
         foreach (Transform check in vasicoisChecks)

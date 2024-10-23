@@ -23,6 +23,11 @@ public class BoxData
         boxList.Add(newBox);
     }
 
+    //public void UpdateDistance(float distance, int index)
+    //{
+    //    boxList[index].Distance(distance, index);
+    //}
+
     public void CheckList()
     {
         for (int i = 0; i < boxList.Count; i++)

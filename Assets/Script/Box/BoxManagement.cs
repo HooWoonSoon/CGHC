@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoxManagement : MonoBehaviour
 {
-    [SerializeField] private List<BoxController> boxs;
+    public List<BoxController> boxs;
     void Start()
     {
         for (int i = 0; i < boxs.Count; i++)
