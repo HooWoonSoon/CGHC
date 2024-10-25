@@ -26,7 +26,7 @@ public class PlayerGroundState : PlayerState
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
-            if (player.ControlEffect != null)
+            if (player.boxController != null)
             {
                 player.boxController.GravityOrientation(true);
                 player.ControlEffect.SetActive(true);

@@ -6,23 +6,21 @@ public class ControlGate : MonoBehaviour
 {
     [SerializeField] private AutoGate autoGate;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        BoxController boxController = collision.GetComponentInParent<BoxController>();
-
-        if (boxController != null)
+        BoxController controller = other.GetComponentInParent<BoxController>();
+        if (controller != null)
         {
             autoGate.OpenGate();
-            Debug.Log(true);
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Player"))
+        BoxController controller = other.GetComponentInParent<BoxController>();
+        if (controller != null)
         {
             autoGate.CloseGate();
-            Debug.Log(false);
         }
     }
 }
