@@ -11,7 +11,7 @@ public class ControlGate : MonoBehaviour
         BoxController controller = other.GetComponentInParent<BoxController>();
         if (controller != null)
         {
-            autoGate.OpenGate();
+            autoGate.CloseOpenGate(true);
         }
     }
 
@@ -20,7 +20,7 @@ public class ControlGate : MonoBehaviour
         BoxController controller = other.GetComponentInParent<BoxController>();
         if (controller != null)
         {
-            autoGate.CloseGate();
+            autoGate.CloseOpenGate(false);
         }
     }
 }

@@ -17,7 +17,6 @@ public class DeadArea : MonoBehaviour
         if (player != null)
         {
             gameMangement.UpdateDead();
-            player.transform.position = gameMangement.character.lastCheckpoint;
         }
     }
 }

@@ -22,5 +22,6 @@ public class GameMangement : MonoBehaviour
     public void UpdateDead()
     {
         character.Dead();
+        player.transform.position = character.lastCheckpoint;
     }
 }
