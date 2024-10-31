@@ -37,7 +37,11 @@ public class ElectricSpike : MonoBehaviour
             BoxController boxController = collider.GetComponent<BoxController>();
             if (boxController != null)
             {
-                Debug.Log("gET");
+                boxController.transform.SetParent(movableSpike.transform);
+                if (boxController.GroundDetected() == false)
+                {
+                    boxController.transform.SetParent(null);
+                }
                 return true;    
             }
         }
