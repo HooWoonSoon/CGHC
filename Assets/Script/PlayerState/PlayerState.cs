@@ -7,6 +7,8 @@ public class PlayerState
     protected PlayerStateMachine stateMachine;
     protected Player player;
     protected Rigidbody2D rb;
+    protected DistanceJoint2D joint;
+    protected LineRenderer rope;
 
     protected float horizontal;
     protected float jump;
@@ -25,6 +27,8 @@ public class PlayerState
     {
         rb = player.rb;
         player.anim.SetBool(animBoolName, true);
+        joint = player.joint;
+        rope = player.rope;
         //Debug.Log("i am in" + stateMachine.currentState);
         triggerCalled = false;
     }

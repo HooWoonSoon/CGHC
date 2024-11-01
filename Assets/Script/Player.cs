@@ -13,12 +13,25 @@ public class Player : MonoBehaviour
     public float jumpForce = 2.5f;
     public int maxJumps = 1;
     public int leftJump;
+    private bool canDoubleJump;
+
+    [Header("Dash")]
     public float dashSpeed;
     public float dashDuration;
     private bool canDash;
     public bool isDash;
-    private bool canDoubleJump;
     public float dashDirection {  get; private set; }
+
+    [Header("Hook")]
+    [SerializeField] private float grappleLength = 5f;
+    [SerializeField] private float maxGrappleDistance = 10f;
+    public float climbSpeed = 2f;
+    [SerializeField] private float swingForce = 5f;
+    public LineRenderer rope;
+
+    private Vector3 grapplePoint;
+    private HookPoint currentHookPoint = null;
+    private bool canGrapple = false;
 
     [Header("Collision")]
     [SerializeField] private LayerMask colliderWithGround;
@@ -32,20 +45,21 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform exitPushCheck;
     [SerializeField] private float exitPushDistance;
 
-    public GameObject hitBox;
-    public GameObject ControlEffect;
     public int facingDirection { get; private set; } = 1;
     public bool facingRight { get; private set; } = true;
 
     #region component
-    public Animator anim { get; private set; }
-    public Rigidbody2D rb { get; private set; }
-    private CapsuleCollider2D capsulecollider;
-    #endregion
-    
     public BoxController previousBox {  get; private set; }
     public BoxController boxController { get; private set; }
     private BoxManagement boxManagement;
+    public GameObject hitBox;
+    public GameObject ControlEffect;
+    public Animator anim { get; private set; }
+    public Rigidbody2D rb { get; private set; }
+    public DistanceJoint2D joint { get; private set; }
+    private CapsuleCollider2D capsulecollider;
+    #endregion
+
 
     #region state
     public PlayerStateMachine stateMachine { get; private set; }
@@ -58,7 +72,7 @@ public class Player : MonoBehaviour
     public PlayerWallJumpState wallJumpState { get; private set; }
     public PlayerPushState pushState { get; private set; }
     public PlayerGravityControlState gravityControlState { get; private set; }
-
+    public PlayerHookState hookState { get; private set; }
     #endregion
 
     #region internal
@@ -91,6 +105,7 @@ public class Player : MonoBehaviour
         wallJumpState = new PlayerWallJumpState(stateMachine, this, "Jump");
         pushState = new PlayerPushState(stateMachine, this, "Push");
         gravityControlState = new PlayerGravityControlState(stateMachine, this, "Control");
+        hookState = new PlayerHookState(stateMachine, this, "Hook");
     }
 
     private void Start()
@@ -102,6 +117,8 @@ public class Player : MonoBehaviour
         leftJump = maxJumps;
         ControlEffect.SetActive(false);
         boxManagement = FindAnyObjectByType<BoxManagement>();
+        joint = gameObject.GetComponent<DistanceJoint2D>();
+        rope.enabled = false;
     }
 
     private void Update()
@@ -109,6 +126,7 @@ public class Player : MonoBehaviour
         stateMachine.currentState.Update();
 
         CheckForDashInput();
+        CheckForHookInput();
         SetRayOrigins();
         CollisionBelowAndAbove();
         BoxGravityControlDetected();
@@ -119,6 +137,51 @@ public class Player : MonoBehaviour
                 previousBox.SlideLight(false); // Use to fixed the wicked ASS HOLE, I know this is very stupid!!!
                 previousBox.GravityOrientation(false); // I give up even if GPT also couldn't help
             }
+        }
+    }
+
+    public void SetCurrentHook(HookPoint hookPoint)
+    {
+        currentHookPoint = hookPoint;
+    }
+
+    public void SetGrappleEnabled(bool enabled)
+    {
+        canGrapple = enabled;
+    }
+
+    private void CheckForHookInput()
+    {
+        if (canGrapple && currentHookPoint != null && Input.GetMouseButtonDown(0))
+        {
+            if (currentHookPoint != null)
+            {
+                grapplePoint = currentHookPoint.transform.position;
+                grapplePoint.z = 0;
+
+                joint.connectedAnchor = grapplePoint;
+                joint.distance = grappleLength;
+                joint.enabled = true;
+
+                rope.enabled = true;
+                rope.SetPosition(0, grapplePoint);
+                rope.SetPosition(1, transform.position);
+            }
+            stateMachine.ChangeState(hookState);
+        }
+    }
+
+    public void ApplySwingForce()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            Debug.Log("clockwise");
+            rb.AddForce(Vector2.right * swingForce, ForceMode2D.Impulse);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            Debug.Log("counterclockwise");
+            rb.AddForce(Vector2.left * swingForce, ForceMode2D.Impulse);
         }
     }
 
