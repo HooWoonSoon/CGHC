@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Box
   - Button
+  - Confiner
   layers:
   - Default
   - TransparentFX
@@ -51,4 +52,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1548186053
+    locked: 0
+  - name: Pointer
+    uniqueID: 3960775509
     locked: 0

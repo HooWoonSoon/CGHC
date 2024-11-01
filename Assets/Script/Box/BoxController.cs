@@ -74,7 +74,6 @@ public class BoxController : MonoBehaviour
     public void SetBoxIndex(int Index)
     {
         boxIndex = Index;
-        Debug.Log(boxIndex);
     }
 
     public void ChangeVasicoisTranform()

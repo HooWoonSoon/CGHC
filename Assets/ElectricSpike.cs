@@ -6,9 +6,10 @@ public class ElectricSpike : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer chain;
     [SerializeField] private GameObject movableSpike;
-    [SerializeField] private float stateTimer;
+    [SerializeField] private float stateTimer = 1f;
     private Vector2 endPositionAbove;
     private Vector2 endPositionBelow;
+    private Vector2 currentPosition;
     private float timer;
 
     void Start()
@@ -16,16 +17,29 @@ public class ElectricSpike : MonoBehaviour
         Bounds bounds = chain.bounds;
         endPositionAbove = new Vector2(bounds.center.x, bounds.max.y);
         endPositionBelow = new Vector2(bounds.center.x, bounds.min.y);
-        
     }
 
     void Update()
     {
         IsBoxDetected();
+        currentPosition = movableSpike.transform.position;
         if (IsBoxDetected())
         {
             timer += Time.deltaTime;
-            movableSpike.transform.position = Vector2.Lerp(endPositionAbove, endPositionBelow, timer);
+            movableSpike.transform.position = Vector2.Lerp(endPositionAbove, endPositionBelow, timer/stateTimer);
+            if (timer >= stateTimer)
+            {
+                timer = stateTimer;
+            }
+        }
+        else if (!IsBoxDetected() && currentPosition != endPositionAbove)
+        {
+            timer -= Time.deltaTime;
+            movableSpike.transform.position = Vector2.Lerp(endPositionAbove, endPositionBelow, timer/stateTimer);
+            if (timer <= 0f)
+            {
+                timer = 0f;
+            }
         }
     }
 
@@ -38,7 +52,7 @@ public class ElectricSpike : MonoBehaviour
             if (boxController != null)
             {
                 boxController.transform.SetParent(movableSpike.transform);
-                if (boxController.GroundDetected() == false)
+                if (boxController.VasicouisDetected() == false)
                 {
                     boxController.transform.SetParent(null);
                 }

@@ -17,9 +17,9 @@ public class BoxData
         boxList = new List<BoxInfo>();
     }
 
-    public void AddBox(bool canPush)
+    public void AddBox(bool canPush, Vector2 generatedPoint, int index)
     {
-        var newBox = new BoxInfo(canPush);
+        var newBox = new BoxInfo(canPush, generatedPoint, index);
         boxList.Add(newBox);
     }
 
@@ -27,6 +27,11 @@ public class BoxData
     //{
     //    boxList[index].Distance(distance, index);
     //}
+
+    public Vector2 GetRepawnPosition(int index)
+    {
+        return boxList[index].RepawnPoint;
+    }
 
     public void CheckList()
     {
