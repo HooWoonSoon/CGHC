@@ -2,29 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spike : MonoBehaviour, Damageble
+public class Spike : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private bool instantKill;
+    private GameMangement gameMangement;
 
-    public void Damage(Player player)
+    private void Start()
     {
-        if (player != null)
-        {
-            if (instantKill)
-            {
-                player.KillPlayer();
-            }
-        }
+        gameMangement = FindAnyObjectByType<GameMangement>();
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = collision.GetComponentInParent<Player>();
+        PlayerDeathHandler deathHandler = other.GetComponent<PlayerDeathHandler>();
 
-        if (player != null)
+        if (deathHandler != null)
         {
-            Damage(player);
+            deathHandler.TriggerDeath();
+            gameMangement.UpdateDead();
         }
     }
 }
+

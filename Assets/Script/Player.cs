@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     private bool canDash;
     public bool isDash;
     private bool canDoubleJump;
-    public float dashDirection {  get; private set; }
+    public float dashDirection { get; private set; }
 
     [Header("Collision")]
     [SerializeField] private LayerMask colliderWithGround;
@@ -42,8 +42,8 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     private CapsuleCollider2D capsulecollider;
     #endregion
-    
-    public BoxController previousBox {  get; private set; }
+
+    public BoxController previousBox { get; private set; }
     public BoxController boxController { get; private set; }
     private BoxManagement boxManagement;
 
@@ -257,7 +257,7 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    public bool IsBoxDetected() 
+    public bool IsBoxDetected()
     {
         RaycastHit2D hit = Physics2D.Raycast(pushControlCheck.position, Vector2.right * facingDirection, pushCheckDistance, colliderWithBox);
 
@@ -273,7 +273,7 @@ public class Player : MonoBehaviour
 
     public bool BoxGravityControlDetected()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(gravityControlCheck.position, gravityControlCheckRadius,colliderWithBox);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(gravityControlCheck.position, gravityControlCheckRadius, colliderWithBox);
         float minDistance = Mathf.Infinity;
         boxController = null;
         foreach (var hit in colliders)
@@ -285,7 +285,7 @@ public class Player : MonoBehaviour
                 boxController = hit.gameObject.GetComponent<BoxController>();
                 boxController.SlideLight(true);
             }
- 
+
             if (previousBox != boxController)
             {
                 if (previousBox != null)
