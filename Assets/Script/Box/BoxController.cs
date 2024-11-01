@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class BoxController : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class BoxController : MonoBehaviour
     [SerializeField] private float checkDistance;
     [SerializeField] private LayerMask colliderWithGround;
     public Vector3 orentaition = Vector3.down;
-    private float skin = 0.1f;
+    private float skin = 0.05f;
     #endregion
 
     #region state
@@ -47,6 +49,7 @@ public class BoxController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         boxcollider = GetComponent<BoxCollider2D>();
     }
+
     private void Start()
     {
         player = FindAnyObjectByType<Player>();
@@ -72,27 +75,25 @@ public class BoxController : MonoBehaviour
     {
         boxIndex = Index;
         Debug.Log(boxIndex);
-    } 
+    }
 
-    public void ChangeGroundTranform()
+    public void ChangeVasicoisTranform()
     {
         Bounds boxBounds = boxcollider.bounds;
 
-        Vector2 boundsBottomLeft = new Vector2(boxBounds.min.x, boxBounds.min.y + skin);
-        Vector2 boundsBottomRight = new Vector2(boxBounds.max.x, boxBounds.min.y + skin);
-        Vector2 boundsTopLeft = new Vector2(boxBounds.min.x, boxBounds.max.y - skin);
-        Vector2 boundsTopRight = new Vector2(boxBounds.max.x, boxBounds.max.y - skin);
-        Vector2 boundsTopLeftSide = new Vector2(boxBounds.min.x,boxBounds.max.y - skin);
-        Vector2 boundsBottomLeftSide = new Vector2(boxBounds.min.x, boxBounds.min.y + skin);
-        Vector2 boundsTopRightSide = new Vector2(boxBounds.max.x, boxBounds.max.y - skin);
-        Vector2 boundsBottomRightSide = new Vector2(boxBounds.max.x, boxBounds.min.y + skin);
+        Vector3 boundsBottomLeft = new Vector3(boxBounds.min.x + skin, boxBounds.min.y + skin, 0f);
+        Vector3 boundsBottomRight = new Vector3(boxBounds.max.x - skin, boxBounds.min.y + skin, 0f);
+        Vector3 boundsTopLeft = new Vector3(boxBounds.min.x + skin, boxBounds.max.y - skin, 0f);
+        Vector3 boundsTopRight = new Vector3(boxBounds.max.x - skin, boxBounds.max.y - skin, 0f);
+        Vector3 boundsTopLeftSide = new Vector3(boxBounds.min.x, boxBounds.max.y - skin * 2, 0f);
+        Vector3 boundsBottomLeftSide = new Vector3(boxBounds.min.x, boxBounds.min.y + skin * 2, 0f);
+        Vector3 boundsTopRightSide = new Vector3(boxBounds.max.x, boxBounds.max.y - skin * 2, 0f);
+        Vector3 boundsBottomRightSide = new Vector3(boxBounds.max.x, boxBounds.min.y + skin * 2, 0f);
+
         if (orentaition == Vector3.down)
         {
             vasicoisChecks[0].transform.position = boundsBottomLeft;
             vasicoisChecks[1].transform.position = boundsBottomRight;
-
-            groundChecks[0].transform.position = boundsBottomLeft; 
-            groundChecks[1].transform.position = boundsBottomRight;
         }
         else if (orentaition == Vector3.up)
         {
@@ -183,11 +184,13 @@ public class BoxController : MonoBehaviour
     {
         foreach (Transform check in vasicoisChecks)
         {
+            Gizmos.color = Color.yellow;
             Debug.DrawRay(check.position, orentaition * checkDistance, Color.red);
         }
         foreach (Transform check in groundChecks)
         {
-            Debug.DrawRay(check.position, Vector2.down * checkDistance, Color.blue);
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(check.position, new Vector3(check.position.x, check.position.y - checkDistance));
         }
     }
 }

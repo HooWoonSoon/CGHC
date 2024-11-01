@@ -18550,7 +18550,7 @@ Transform:
   m_GameObject: {fileID: 44028204}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.86, y: -5.9, z: 0}
+  m_LocalPosition: {x: -43.59, y: -0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25796,7 +25796,7 @@ Transform:
   m_GameObject: {fileID: 302691406}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.431, y: -0.45999998, z: 0}
+  m_LocalPosition: {x: 0.4369281, y: -0.4688121, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38640,7 +38640,7 @@ Transform:
   m_GameObject: {fileID: 1018771678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.434, y: -0.46, z: 0}
+  m_LocalPosition: {x: -0.4401167, y: -0.4688121, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39580,7 +39580,7 @@ Transform:
   m_GameObject: {fileID: 1187647295}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.434, y: -0.45999998, z: 0}
+  m_LocalPosition: {x: -0.4401167, y: -0.4688121, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40837,7 +40837,7 @@ Transform:
   m_GameObject: {fileID: 1318746132}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.431, y: -0.45999998, z: 0}
+  m_LocalPosition: {x: 0.4369281, y: -0.4688121, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41031,7 +41031,7 @@ Transform:
   m_GameObject: {fileID: 1363931493}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.86, y: -5.9000006, z: -10}
+  m_LocalPosition: {x: -43.59, y: -0.010000238, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -49102,7 +49102,6 @@ MonoBehaviour:
     m_Bits: 8
   orentaition: {x: 0, y: -1, z: 0}
   changeMt: {fileID: -876546973899608171, guid: 819b34ef40c106043a6316b26fe18812, type: 3}
-  isIllumination: 0
   canPush: 0
   pointer: {fileID: 752745751}
 --- !u!50 &1705368088
@@ -51913,7 +51912,6 @@ MonoBehaviour:
     m_Bits: 8
   orentaition: {x: 0, y: -1, z: 0}
   changeMt: {fileID: -876546973899608171, guid: 819b34ef40c106043a6316b26fe18812, type: 3}
-  isIllumination: 0
   canPush: 1
   pointer: {fileID: 913067807}
 --- !u!50 &2054047440

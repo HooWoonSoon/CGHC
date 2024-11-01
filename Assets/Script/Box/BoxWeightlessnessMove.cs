@@ -14,7 +14,7 @@ public class BoxWeightlessnessMove : BoxState
         base.Enter();
         boxController.orentaition = boxController.wayMove;
         boxController.rb.gravityScale = 0;
-        boxController.ChangeGroundTranform();
+        boxController.ChangeVasicoisTranform();
     }
 
     public override void Exit()
@@ -31,7 +31,8 @@ public class BoxWeightlessnessMove : BoxState
     public override void FixeUpdate()
     {
         base.FixeUpdate();
-        rb.MovePosition(boxController.transform.position + boxController.orentaition * 2f * Time.deltaTime);
+        rb.MovePosition(boxController.transform.position + boxController.orentaition * 3f * Time.deltaTime);
+        
         if (boxController.VasicouisDetected())
         {
             stateMachine.ChangeState(boxController.boxIdleState);

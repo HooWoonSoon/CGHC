@@ -22,7 +22,7 @@ public class BoxAirState : BoxState
     public override void Update()
     {
         base.Update();
-        if (boxController.GroundDetected())
+        if (boxController.VasicouisDetected())
         {
             stateMachine.ChangeState(boxController.boxIdleState);
         }
