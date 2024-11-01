@@ -51337,7 +51337,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.765694, y: -4.1881742, z: -10}
+  m_LocalPosition: {x: 41.517433, y: -4.1881742, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61567,7 +61567,7 @@ Transform:
   m_GameObject: {fileID: 1476505433}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 51.18, y: -5.99, z: -10}
+  m_LocalPosition: {x: 52.29, y: -5.99, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -62066,6 +62066,11 @@ MonoBehaviour:
   dashSpeed: 14
   dashDuration: 0.2
   isDash: 0
+  grappleLength: 5
+  maxGrappleDistance: 10
+  climbSpeed: 2
+  swingForce: 5
+  rope: {fileID: 0}
   colliderWithGround:
     serializedVersion: 2
     m_Bits: 136
@@ -62093,7 +62098,7 @@ Transform:
   m_GameObject: {fileID: 2091610250}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 51.18, y: -5.99, z: 0}
+  m_LocalPosition: {x: 52.29, y: -5.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62117,14 +62122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0ade3dd4a82e74c85030775cc22241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grappleLength: 5
-  grappleLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  rope: {fileID: 780264928}
-  maxGrappleDistance: 10
-  climbSpeed: 2
-  swingForce: 10
 --- !u!232 &2091610256
 DistanceJoint2D:
   m_ObjectHideFlags: 0
@@ -62132,7 +62129,7 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2091610250}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 0}

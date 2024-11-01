@@ -33,9 +33,8 @@ public class BoxController : MonoBehaviour
     private BoxData boxData;
     #endregion
 
-    public bool isIllumination = false;
     public Vector3 wayMove { get; private set; }
-    public bool canPush {  get; private set; }
+    public bool canPush;
     public int boxIndex { get; private set; }
     [SerializeField] private GameObject pointer;
 

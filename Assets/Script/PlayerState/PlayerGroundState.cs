@@ -37,7 +37,7 @@ public class PlayerGroundState : PlayerState
             stateMachine.ChangeState(player.gravityControlState);
             player.boxController.GravityOrientation(false);
         }
-        if (Input.GetKeyDown(KeyCode.E) && player.IsBoxDetected() == true && player.isPushing == false && player.boxController.GroundDetected()) 
+        if (Input.GetKeyDown(KeyCode.E) && player.IsBoxDetected() == true && player.isPushing == false && player.boxController.GroundDetected() && player.boxController.canPush == true) 
         {
             stateMachine.ChangeState(player.pushState);
         }
