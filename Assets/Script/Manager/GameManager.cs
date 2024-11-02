@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour, IsSaveManager
     }
     void Start()
     {
-        player = FindAnyObjectByType<Player>();
+        player = PlayerManager.instance.player;
         character = new PlayerInfo(player.transform.position);
         Debug.Log(character.ToString());
     }

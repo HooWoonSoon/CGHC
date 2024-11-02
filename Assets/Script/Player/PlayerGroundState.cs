@@ -24,7 +24,7 @@ public class PlayerGroundState : PlayerState
     {
         base.Update();
 
-        if (Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetKey(KeyCode.Mouse1) && SkillManager.instance.control.CanUseSkill())
         {
             if (player.boxController != null)
             {
@@ -32,7 +32,7 @@ public class PlayerGroundState : PlayerState
                 player.ControlEffect.SetActive(true);
             }
         }
-        if (Input.GetKeyUp(KeyCode.Mouse1) && player.BoxGravityControlDetected())
+        if (Input.GetKeyUp(KeyCode.Mouse1) && player.BoxGravityControlDetected() && SkillManager.instance.control.CanUseSkill())
         {
             stateMachine.ChangeState(player.gravityControlState);
             player.boxController.GravityOrientation(false);

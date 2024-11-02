@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
     [Header("Dash")]
     public float dashSpeed;
     public float dashDuration;
-    private bool canDash;
     public bool isDash;
     public float dashDirection {  get; private set; }
 
@@ -201,18 +200,13 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        else if (isGrounded && !isDash)
-        {
-            canDash = true;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill())
         {
             dashDirection = Input.GetAxisRaw("Horizontal");
             if (dashDirection == 0)
             {
                 dashDirection = facingDirection;
             }
-            canDash = false;
             stateMachine.ChangeState(dashState);
         }
     }

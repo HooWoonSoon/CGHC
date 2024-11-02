@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private GameManager gameMangement;
+    private GameManager gameManager;
 
     private void Start()
     {
-        gameMangement = FindAnyObjectByType<GameManager>();
+        gameManager = GameManager.instance;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -16,7 +16,7 @@ public class Checkpoint : MonoBehaviour
 
         if (player != null)
         {
-            gameMangement.UpdateCheckpoint(player.transform.position);
+            gameManager.UpdateCheckpoint(player.transform.position);
         }
     }
 }

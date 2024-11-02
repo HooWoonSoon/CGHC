@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class DeadArea : MonoBehaviour
 {
-    private GameManager gameMangement;
+    private GameManager gameManager;
 
     private void Start()
     {
-        gameMangement = FindAnyObjectByType<GameManager>();
+        gameManager = GameManager.instance;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -19,7 +19,7 @@ public class DeadArea : MonoBehaviour
         if (deathHandler != null)
         {
             deathHandler.TriggerDeath();
-            gameMangement.UpdateDead();
+            gameManager.UpdateDead();
         }
         if (boxController != null)
         {

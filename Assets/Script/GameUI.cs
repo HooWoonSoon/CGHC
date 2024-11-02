@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameUI : MonoBehaviour
 {
-    private GameManager gameMangement;
+    private GameManager gameManager;
 
     [SerializeField] private GameObject gameUi;
     [SerializeField] private TextMeshProUGUI DeadCountText;
@@ -15,14 +15,14 @@ public class GameUI : MonoBehaviour
 
     void Start()
     {
-        gameMangement = FindAnyObjectByType<GameManager>();
+        gameManager = GameManager.instance;
         gameUi.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        DeadCountText.text = gameMangement.character.playerDeadCount.ToString();
+        DeadCountText.text = gameManager.character.playerDeadCount.ToString();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)

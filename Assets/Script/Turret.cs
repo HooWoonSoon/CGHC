@@ -10,7 +10,7 @@ public class AutoTurret : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+        player = PlayerManager.instance.player.transform; 
         StartCoroutine(FireCoroutine()); 
     }
 

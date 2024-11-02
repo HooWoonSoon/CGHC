@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
-    private GameManager gameMangement;
+    private GameManager gameManager;
     private void Start()
     {
-        gameMangement = FindAnyObjectByType<GameManager>();
+        gameManager = GameManager.instance;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -16,7 +16,7 @@ public class Spike : MonoBehaviour
         if (deathHandler != null)
         {
             deathHandler.TriggerDeath();
-            gameMangement.UpdateDead();
+            gameManager.UpdateDead();
         }
     }
 }

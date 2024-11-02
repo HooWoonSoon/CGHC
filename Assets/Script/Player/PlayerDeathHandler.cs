@@ -67,7 +67,7 @@ public class PlayerDeathHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(0.8f); 
 
-        GameManager gameMangement = FindObjectOfType<GameManager>();
+        GameManager gameMangement = GameManager.instance;
         if (gameMangement != null)
         {
             transform.position = gameMangement.character.lastCheckpoint;

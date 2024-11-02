@@ -52,7 +52,7 @@ public class BoxController : MonoBehaviour
 
     private void Start()
     {
-        player = FindAnyObjectByType<Player>();
+        player = PlayerManager.instance.player;
         boxStateMachine.Initialize(boxIdleState);
         sr = GetComponentInChildren<SpriteRenderer>();
         originalMt = sr.material;
