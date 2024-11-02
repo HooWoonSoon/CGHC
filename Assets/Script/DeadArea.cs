@@ -13,11 +13,12 @@ public class DeadArea : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = other.GetComponent<Player>();
+        PlayerDeathHandler deathHandler = other.GetComponent<PlayerDeathHandler>();
         BoxController boxController = other.GetComponent<BoxController>();
 
-        if (player != null)
+        if (deathHandler != null)
         {
+            deathHandler.TriggerDeath();
             gameMangement.UpdateDead();
         }
         if (boxController != null)
