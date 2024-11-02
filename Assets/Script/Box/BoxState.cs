@@ -17,7 +17,7 @@ public class BoxState
     public virtual void Enter()
     {
         rb = boxController.rb;
-        Debug.Log("I am in" + stateMachine.currentState);
+        //Debug.Log("I am in" + stateMachine.currentState);
     }
 
     public virtual void Exit()

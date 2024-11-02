@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
     #region component
     public BoxController previousBox {  get; private set; }
     public BoxController boxController { get; private set; }
-    private RoomManagement boxManagement;
     public GameObject hitBox;
     public GameObject ControlEffect;
     public Animator anim { get; private set; }
@@ -116,7 +115,6 @@ public class Player : MonoBehaviour
         stateMachine.Initialize(idleState);
         leftJump = maxJumps;
         ControlEffect.SetActive(false);
-        boxManagement = FindAnyObjectByType<RoomManagement>();
         joint = gameObject.GetComponent<DistanceJoint2D>();
         rope.enabled = false;
     }

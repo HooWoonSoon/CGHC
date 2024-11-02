@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomManagement : MonoBehaviour
+public class RoomManager : MonoBehaviour
 {
     private List<BoxController> boxs = new List<BoxController>();
 
@@ -18,7 +18,7 @@ public class RoomManagement : MonoBehaviour
             BoxData.instance.AddBox(boxController.canPush, boxController.transform.position, index);
             boxController.SetBoxIndex(index);
 
-            BoxData.instance.CheckList();
+            //BoxData.instance.CheckList();
         }
     }
 

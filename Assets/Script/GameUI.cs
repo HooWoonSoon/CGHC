@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameUI : MonoBehaviour
 {
-    private GameMangement gameMangement;
+    private GameManager gameMangement;
 
     [SerializeField] private GameObject gameUi;
     [SerializeField] private TextMeshProUGUI DeadCountText;
@@ -15,7 +15,7 @@ public class GameUI : MonoBehaviour
 
     void Start()
     {
-        gameMangement = FindAnyObjectByType<GameMangement>();
+        gameMangement = FindAnyObjectByType<GameManager>();
         gameUi.SetActive(false);
     }
 

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
-    private GameMangement gameMangement;
+    private GameManager gameMangement;
     private void Start()
     {
-        gameMangement = FindAnyObjectByType<GameMangement>();
+        gameMangement = FindAnyObjectByType<GameManager>();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
