@@ -33,7 +33,7 @@ public class SaveManager : MonoBehaviour
 
     public void NewGame()
     {
-        playerInfo = new PlayerInfo(Vector2.zero);
+        playerInfo = new PlayerInfo();
     }
 
     public void LoadGame()

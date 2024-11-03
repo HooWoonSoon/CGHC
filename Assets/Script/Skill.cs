@@ -8,9 +8,4 @@ public class Skill : MonoBehaviour
     {
         return true;
     }
-
-    public virtual void UseSkill()
-    {
-
-    }
 }

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class DashSkill : Skill
 {
-    public override void UseSkill()
+    [Header("Dash")]
+    public bool dashUnlocked;
+
+    public void UnlockDash()
     {
-        base.UseSkill();
+        dashUnlocked = true;
     }
 }

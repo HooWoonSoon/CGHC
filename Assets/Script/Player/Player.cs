@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
     #region component
     public BoxController previousBox {  get; private set; }
     public BoxController boxController { get; private set; }
+    public SkillManager skill {  get; private set; }
     public GameObject hitBox;
     public GameObject ControlEffect;
     public Animator anim { get; private set; }
@@ -108,6 +109,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        skill = SkillManager.instance;
         capsulecollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
@@ -200,7 +202,11 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill())
+        if (skill.dash.dashUnlocked == false)
+        {
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift) && skill.dash.CanUseSkill())
         {
             dashDirection = Input.GetAxisRaw("Horizontal");
             if (dashDirection == 0)

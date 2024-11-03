@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour, IsSaveManager
     void Start()
     {
         player = PlayerManager.instance.player;
-        character = new PlayerInfo(player.transform.position);
+        character = new PlayerInfo();
         Debug.Log(character.ToString());
     }
 

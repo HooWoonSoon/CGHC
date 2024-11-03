@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerGroundState : PlayerState
@@ -24,7 +25,7 @@ public class PlayerGroundState : PlayerState
     {
         base.Update();
 
-        if (Input.GetKey(KeyCode.Mouse1) && SkillManager.instance.control.CanUseSkill())
+        if (Input.GetKey(KeyCode.Mouse1) && player.skill.control.CanUseSkill() && player.skill.control.controlUnlocked == true)
         {
             if (player.boxController != null)
             {
@@ -32,7 +33,7 @@ public class PlayerGroundState : PlayerState
                 player.ControlEffect.SetActive(true);
             }
         }
-        if (Input.GetKeyUp(KeyCode.Mouse1) && player.BoxGravityControlDetected() && SkillManager.instance.control.CanUseSkill())
+        if (Input.GetKeyUp(KeyCode.Mouse1) && player.BoxGravityControlDetected() && player.skill.control.CanUseSkill() && player.skill.control.controlUnlocked == true)
         {
             stateMachine.ChangeState(player.gravityControlState);
             player.boxController.GravityOrientation(false);

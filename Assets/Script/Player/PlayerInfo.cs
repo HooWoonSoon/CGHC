@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [System.Serializable]
 public class PlayerInfo
 {
-    public Vector2 lastCheckpoint { get; private set; }
-    public float gameDuration { get; private set; }
-    public int playerDeadCount { get; private set; }
+    public Vector2 lastCheckpoint;
+    public SerializedDictionary<string, bool> skill;
+    public float gameDuration;
+    public int playerDeadCount;
    
-    public PlayerInfo(Vector2 checkpoint)
+    public PlayerInfo()
     {
-        lastCheckpoint = checkpoint;
+        lastCheckpoint = new Vector2(41.27f, -6.12f);
         gameDuration = 0;
         playerDeadCount = 0;
+        skill = new SerializedDictionary<string, bool>();
     }
 
     public void Dead()
     {
         playerDeadCount++;
+        PlayerManager.instance.playerDeadCount = playerDeadCount;
     }
 
     public void Timer(float elspeTime)
@@ -29,6 +33,7 @@ public class PlayerInfo
     public void Checkpoint(Vector2 newCheckpoint)
     {
         lastCheckpoint = newCheckpoint;
+        PlayerManager.instance.lastCheckPoint = lastCheckpoint;
     }
 
     public override string ToString()

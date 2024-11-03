@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class ControlSkill : Skill
 {
-    public override void UseSkill()
+    [Header("Control")]
+    public bool controlUnlocked;
+
+    public void UnlockDash()
     {
-        base.UseSkill();
+        controlUnlocked = true;
     }
 }
