@@ -137,6 +137,36 @@ public class Player : MonoBehaviour
                 previousBox.GravityOrientation(false); // I give up even if GPT also couldn't help
             }
         }
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (isGrounded)
+            {
+                Jump();
+                leftJump = maxJumps - 1; // Reset available jumps when grounded
+            }
+            else if (leftJump > 0)
+            {
+                Jump(); // Perform the jump
+                leftJump--; // Decrement the remaining jumps
+            }
+        }
+
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+    }
+
+    private void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+    }
+
+    public void SetMaxJumps(int jumps)
+    {
+        maxJumps = jumps;       // Set maximum jumps
+        leftJump = jumps;       // Reset the available jumps to the new max
+        Debug.Log("Max jumps set to: " + maxJumps);
     }
 
     public void SetCurrentHook(HookPoint hookPoint)
