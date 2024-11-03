@@ -1,9 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class SkillTriggerGet : MonoBehaviour
 {
+    [SerializeField] private List<UiSkill> uiSkills; 
+    [SerializeField] private SkillType skillType;
+    private void Start()
+    {
+        foreach (UiSkill search in Resources.FindObjectsOfTypeAll<UiSkill>())
+        {
+            uiSkills.Add(search);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Player player = other.GetComponent<Player>();
@@ -12,10 +23,29 @@ public class SkillTriggerGet : MonoBehaviour
         {
             SkillManager skillManager = SkillManager.instance;
 
-            if (!skillManager.dash.dashUnlocked)
+            if (skillType == SkillType.Dash && !skillManager.dash.dashUnlocked)
             {
+                UnlockUiSkill(skillType);
                 skillManager.dash.UnlockDash();
-                Debug.Log("Dash is unlock");
+                Debug.Log("Dash is unlocked");
+            }
+            else if (skillType == SkillType.Control && !skillManager.control.controlUnlocked)
+            {
+                UnlockUiSkill(skillType);
+                skillManager.control.UnlockControl();
+                Debug.Log("Control is unlocked");
+            }
+        }
+    }
+
+    private void UnlockUiSkill(SkillType skillType)
+    {
+        foreach (var uiSkill in uiSkills)
+        {
+            if (uiSkill != null && uiSkill.GetSkillType() == skillType) 
+            {
+                uiSkill.Unlock();
+                return;
             }
         }
     }
