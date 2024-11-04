@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public class FallingPlatform : MonoBehaviour
 {
-    Rigidbody2D rb;
+    private Rigidbody2D rb;
     private Vector2 defaultPos;
-    [SerializeField] float fallDelay, respawnTime;
-    private float stateTimer;
+    [SerializeField] private float fallDelay = 1f;
+    [SerializeField] private float respawnTime = 2f;
+    private Coroutine dropCoroutine;
 
     void Start()
     {
@@ -15,30 +16,33 @@ public class FallingPlatform : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
-    private void Update()
-    {
-        if (stateTimer >= respawnTime)
-        {
-            StopAllCoroutines();
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            transform.position = defaultPos;
-            stateTimer = 0;
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D other)
     {
         Player player = PlayerManager.instance.player;
-        if (player != null) 
+
+        if (player != null)
         {
-            StartCoroutine("PlatformDrop");
+            if (dropCoroutine != null)
+            {
+                StopCoroutine(dropCoroutine);
+            }
+            dropCoroutine = StartCoroutine(PlatformDrop());
         }
     }
 
-    IEnumerator PlatformDrop()
+    private IEnumerator PlatformDrop()
     {
         yield return new WaitForSeconds(fallDelay);
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        stateTimer += Time.deltaTime;
+        rb.bodyType = RigidbodyType2D.Dynamic;  
+        yield return new WaitForSeconds(respawnTime);
+        ResetPlatform();
+    }
+
+    private void ResetPlatform()
+    {
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.velocity = Vector2.zero;  
+        transform.position = defaultPos;  
+        dropCoroutine = null; 
     }
 }
