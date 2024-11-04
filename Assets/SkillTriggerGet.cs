@@ -23,17 +23,23 @@ public class SkillTriggerGet : MonoBehaviour
         {
             SkillManager skillManager = SkillManager.instance;
 
-            if (skillType == SkillType.Dash && !skillManager.dash.dashUnlocked)
-            {
-                UnlockUiSkill(skillType);
-                skillManager.dash.UnlockDash();
-                Debug.Log("Dash is unlocked");
-            }
-            else if (skillType == SkillType.ControlGravity && !skillManager.control.controlUnlocked)
+            if (skillType == SkillType.ControlGravity && !skillManager.control.controlUnlocked)
             {
                 UnlockUiSkill(skillType);
                 skillManager.control.UnlockControl();
                 Debug.Log("Control is unlocked");
+            }
+            else if (skillType == SkillType.DoubleJump && !skillManager.doubleJump.doubleJumpUnlock)
+            {
+                UnlockUiSkill(skillType);
+                skillManager.doubleJump.UnlockDoubleJump();
+                Debug.Log("Double Jump is unlocked");
+            }
+            else if (skillType == SkillType.Dash && !skillManager.dash.dashUnlocked)
+            {
+                UnlockUiSkill(skillType);
+                skillManager.dash.UnlockDash();
+                Debug.Log("Dash is unlocked");
             }
             else if (skillType == SkillType.Hook && !skillManager.hook.hookUnlocked)
             {

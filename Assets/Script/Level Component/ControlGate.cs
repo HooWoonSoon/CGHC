@@ -4,23 +4,40 @@ using UnityEngine;
 
 public class ControlGate : MonoBehaviour
 {
-    [SerializeField] private AutoGate autoGate;
+    [SerializeField] private List<AutoGate> autoGates;
+    [SerializeField] private List<Valves> valves;
+    private Rigidbody2D rb;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void Start()
     {
-        BoxController controller = other.GetComponentInParent<BoxController>();
+        rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        BoxController controller = other.gameObject.GetComponent<BoxController>();
         if (controller != null)
         {
-            autoGate.CloseOpenGate(true);
+            foreach (var autoGate in autoGates)
+                autoGate.CloseOpenGate(true);
+            foreach (var valve in valves)
+                valve.swicthOn = true;
+            rb.isKinematic = true;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnCollisionExit2D(Collision2D other)
     {
-        BoxController controller = other.GetComponentInParent<BoxController>();
+        BoxController controller = other.gameObject.GetComponent<BoxController>();
         if (controller != null)
         {
-            autoGate.CloseOpenGate(false);
+            foreach (var autoGate in autoGates)
+                autoGate.CloseOpenGate(false);
+            foreach (var valve in valves)
+                valve.swicthOn = false;
+            rb.isKinematic = false;
         }
     }
 }

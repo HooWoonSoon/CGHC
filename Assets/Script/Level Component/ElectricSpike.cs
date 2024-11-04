@@ -7,6 +7,7 @@ public class ElectricSpike : MonoBehaviour
     [SerializeField] private SpriteRenderer chain;
     [SerializeField] private GameObject movableSpike;
     [SerializeField] private float stateTimer = 1f;
+    private GameManager gameManager;
     private Vector2 endPositionAbove;
     private Vector2 endPositionBelow;
     private Vector2 currentPosition;
@@ -17,13 +18,14 @@ public class ElectricSpike : MonoBehaviour
         Bounds bounds = chain.bounds;
         endPositionAbove = new Vector2(bounds.center.x, bounds.max.y);
         endPositionBelow = new Vector2(bounds.center.x, bounds.min.y);
+        gameManager = GameManager.instance;
     }
 
     void Update()
     {
-        IsBoxDetected();
+        Detected();
         currentPosition = movableSpike.transform.position;
-        if (IsBoxDetected())
+        if (Detected())
         {
             timer += Time.deltaTime;
             movableSpike.transform.position = Vector2.Lerp(endPositionAbove, endPositionBelow, timer/stateTimer);
@@ -32,7 +34,7 @@ public class ElectricSpike : MonoBehaviour
                 timer = stateTimer;
             }
         }
-        else if (!IsBoxDetected() && currentPosition != endPositionAbove)
+        else if (!Detected() && currentPosition != endPositionAbove)
         {
             timer -= Time.deltaTime;
             movableSpike.transform.position = Vector2.Lerp(endPositionAbove, endPositionBelow, timer/stateTimer);
@@ -43,12 +45,13 @@ public class ElectricSpike : MonoBehaviour
         }
     }
 
-    private bool IsBoxDetected()
+    private bool Detected()
     {
         Collider2D[] colliders = Physics2D.OverlapBoxAll(movableSpike.transform.position, movableSpike.transform.localScale, 0);
         foreach (Collider2D collider in colliders)
         {
             BoxController boxController = collider.GetComponent<BoxController>();
+            PlayerDeathHandler deathHandler = collider.GetComponent<PlayerDeathHandler>();
             if (boxController != null)
             {
                 boxController.transform.SetParent(movableSpike.transform);
@@ -57,6 +60,11 @@ public class ElectricSpike : MonoBehaviour
                     boxController.transform.SetParent(null);
                 }
                 return true;    
+            }
+            if (deathHandler != null)
+            {
+                deathHandler.TriggerDeath();
+                gameManager.UpdateDead();
             }
         }
         return false;

@@ -11,7 +11,7 @@ public class PlayerState
     protected LineRenderer rope;
 
     protected float horizontal;
-    protected float jump;
+    //protected float jump;
     private string animBoolName;
     protected float stateTimer;
     protected bool triggerCalled;
@@ -37,7 +37,7 @@ public class PlayerState
     {
         stateTimer -= Time.deltaTime;
         horizontal = Input.GetAxisRaw("Horizontal");
-        jump = Input.GetAxisRaw("Jump");
+        //jump = Input.GetAxisRaw("Jump");
         player.anim.SetFloat("yVelocity", rb.velocity.y);
     }
 

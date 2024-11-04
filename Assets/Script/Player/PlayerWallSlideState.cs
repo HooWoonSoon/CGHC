@@ -21,7 +21,7 @@ public class PlayerWallSlideState : PlayerState
     public override void Update()
     {
         base.Update();
-        if (jump > 0 && player.isGrounded == false)
+        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded == false)
         {
             stateMachine.ChangeState(player.wallJumpState);
         }

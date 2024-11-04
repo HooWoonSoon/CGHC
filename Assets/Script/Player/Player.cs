@@ -11,9 +11,11 @@ public class Player : MonoBehaviour
     [Header("Action")]
     public float moveSpeed = 2.5f;
     public float jumpForce = 2.5f;
-    public int maxJumps = 1;
-    public int leftJump;
-    private bool canDoubleJump;
+
+    [Header("Double Jump")]
+    public float extraJumpForce = 5f;
+    [SerializeField] private int extraJump = 1;
+    private int leftJump;
 
     [Header("Dash")]
     public float dashSpeed;
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
+    public PlayerDoubleJump doubleJump { get; private set; }
     public PlayerAirState airState { get; private set; }
     public PlayerDashState dashState { get; private set; }
     public PlayerWallSlideState wallSlideState { get; private set; }
@@ -98,6 +101,7 @@ public class Player : MonoBehaviour
         idleState = new PlayerIdleState(stateMachine, this, "Idle");
         moveState = new PlayerMoveState(stateMachine, this, "Move");
         jumpState = new PlayerJumpState(stateMachine, this, "Jump");
+        doubleJump = new PlayerDoubleJump(stateMachine, this, "Jump");
         airState = new PlayerAirState(stateMachine, this, "Jump");
         dashState = new PlayerDashState(stateMachine, this, "Dash");
         wallSlideState = new PlayerWallSlideState(stateMachine, this, "WallSlide");
@@ -114,7 +118,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         stateMachine.Initialize(idleState);
-        leftJump = maxJumps;
+        //leftJump = maxJumps;
         ControlEffect.SetActive(false);
         joint = gameObject.GetComponent<DistanceJoint2D>();
         rope.enabled = false;
@@ -126,6 +130,7 @@ public class Player : MonoBehaviour
 
         CheckForDashInput();
         CheckForHookInput();
+        CheckForDoubleJumpInput();
         SetRayOrigins();
         CollisionBelowAndAbove();
         BoxGravityControlDetected();
@@ -135,6 +140,25 @@ public class Player : MonoBehaviour
             {
                 previousBox.SlideLight(false); // Use to fixed the wicked ASS HOLE, I know this is very stupid!!!
                 previousBox.GravityOrientation(false); // I give up even if GPT also couldn't help
+            }
+        }
+    }
+    private void CheckForDoubleJumpInput()
+    {
+        if (skill.doubleJump.doubleJumpUnlock == false)
+        {
+            return;
+        }
+        if (isGrounded == true)
+        {
+            leftJump = extraJump;
+        }
+        if (!isFloors && !isGrounded && Input.GetKeyDown(KeyCode.Space) && leftJump > 0)
+        {
+            if (stateMachine.currentState == airState || stateMachine.currentState == jumpState)
+            {
+                leftJump -= 1;
+                stateMachine.ChangeState(doubleJump);
             }
         }
     }
@@ -176,6 +200,10 @@ public class Player : MonoBehaviour
 
     public void ApplySwingForce()
     {
+        if (skill.hook.hookUnlocked == false)
+        {
+            return;
+        }
         if (Input.GetKey(KeyCode.D))
         {
             Debug.Log("clockwise");
@@ -188,17 +216,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void CheckForJumpCount(bool IsGround)
-    {
-        if (IsGround)
-        {
-            leftJump = maxJumps;
-        }
-        else
-        {
-            leftJump -= 1;
-        }
-    }
+    //public void CheckForJumpCount(bool IsGround)
+    //{
+    //    if (IsGround)
+    //    {
+    //        leftJump = maxJumps;
+    //    }
+    //    else
+    //    {
+    //        leftJump -= 1;
+    //    }
+    //}
 
     private void CheckForDashInput()
     {
@@ -255,10 +283,10 @@ public class Player : MonoBehaviour
         switch (rb.velocity.y)
         {
             case < -0.01f:
-                bottomRayLength += 0.1f;
+                bottomRayLength += skin;
                 break;
             case > 0.01f:
-                aboveRayLength += 0.1f;
+                aboveRayLength += skin;
                 break;
         }
         this.isGrounded = CheckCollision(-transform.up, bottomRayLength, Color.green, out bool isGrounded);
@@ -361,11 +389,6 @@ public class Player : MonoBehaviour
             }
         }
         return boxController != null;
-    }
-
-    public void KillPlayer()
-    {
-        Debug.Log("Kill Player");
     }
 
     #region Flip
