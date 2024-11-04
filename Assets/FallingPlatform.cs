@@ -4,6 +4,7 @@ using UnityEngine;
 public class FallingPlatform : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private BoxCollider2D boxCollider2D;
     private Vector2 defaultPos;
     [SerializeField] private float fallDelay = 1f;
     [SerializeField] private float respawnTime = 2f;
@@ -14,6 +15,7 @@ public class FallingPlatform : MonoBehaviour
         defaultPos = transform.position;
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     private void OnCollisionEnter2D(Collision2D other)

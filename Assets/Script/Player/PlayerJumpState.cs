@@ -30,7 +30,7 @@ public class PlayerJumpState : PlayerState
 
             if (jumpHoldTime < player.maxJumpHoldTime)
             {
-                rb.AddForce(Vector2.up * player.jumpForce * 0.6f, ForceMode2D.Impulse);
+                rb.AddForce(Vector2.up * player.jumpForce * 0.5f, ForceMode2D.Impulse);
             }
         }
 
