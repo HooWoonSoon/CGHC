@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public enum SkillType
 {
     Dash,
-    Control
+    ControlGravity,
+    DoubleJump,
+    Hook,
 }
 
 public class UiSkill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IsSaveManager
 {
     private Image skillImage;
-    private UISkillToolTip skillToolTip;
+    [SerializeField] private UISkillToolTip skillToolTip;
     [SerializeField] private SkillType skillType; 
     [SerializeField] private string skillName;
     [TextArea]
@@ -28,7 +30,6 @@ public class UiSkill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
     private void OnEnable()
     {
         skillImage = GetComponent<Image>();
-        skillToolTip = FindObjectOfType<UISkillToolTip>();
         UpdateSkillVisual();
     }
 

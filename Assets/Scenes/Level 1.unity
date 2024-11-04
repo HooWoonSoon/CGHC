@@ -23847,6 +23847,7 @@ GameObject:
   - component: {fileID: 59802362}
   - component: {fileID: 59802361}
   - component: {fileID: 59802363}
+  - component: {fileID: 59802364}
   m_Layer: 0
   m_Name: Skill Manager
   m_TagString: Untagged
@@ -23896,6 +23897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dash: {fileID: 0}
   control: {fileID: 0}
+  hook: {fileID: 0}
 --- !u!114 &59802363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23909,6 +23911,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlUnlocked: 0
+--- !u!114 &59802364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59802359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97396079533fd0344b2adc0a8e56d6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hookUnlocked: 0
 --- !u!1001 &63356467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25515,6 +25530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71da5513c308d0f498ec534c50e8bc2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillToolTip: {fileID: 608871546}
   skillType: 0
   skillName: Dash
   skillDescription: 
@@ -26181,7 +26197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71da5513c308d0f498ec534c50e8bc2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillType: 0
+  skillToolTip: {fileID: 608871546}
+  skillType: 3
   skillName: Hook
   skillDescription: 
   unlocked: 0
@@ -29875,7 +29892,7 @@ Transform:
   m_GameObject: {fileID: 507698616}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.09, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -33186,7 +33203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71da5513c308d0f498ec534c50e8bc2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillType: 0
+  skillToolTip: {fileID: 608871546}
+  skillType: 2
   skillName: Double Jump
   skillDescription: 
   unlocked: 0
@@ -34719,7 +34737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71da5513c308d0f498ec534c50e8bc2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillType: 0
+  skillToolTip: {fileID: 608871546}
+  skillType: 1
   skillName: Control Gravity
   skillDescription: 'Press right mouse to control the box
 
@@ -37868,7 +37887,7 @@ Transform:
   m_GameObject: {fileID: 1363931493}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.549999, y: -5.96, z: -10}
+  m_LocalPosition: {x: 18.52, y: -5.7700005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38538,7 +38557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiSkills: []
-  skillType: 0
+  skillType: 1
 --- !u!1 &1460036888
 GameObject:
   m_ObjectHideFlags: 0
@@ -43870,7 +43889,7 @@ Transform:
   m_GameObject: {fileID: 2061585638}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.549999, y: -5.96, z: -10}
+  m_LocalPosition: {x: 18.52, y: -5.7700005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44491,11 +44510,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1195204255740064806, guid: 61ca85ccc55b3d54d9417e77e19acd8b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.55
+      value: 18.52
       objectReference: {fileID: 0}
     - target: {fileID: 1195204255740064806, guid: 61ca85ccc55b3d54d9417e77e19acd8b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.96
+      value: -5.77
       objectReference: {fileID: 0}
     - target: {fileID: 1195204255740064806, guid: 61ca85ccc55b3d54d9417e77e19acd8b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -44541,6 +44560,14 @@ PrefabInstance:
       propertyPath: rope
       value: 
       objectReference: {fileID: 1978096220}
+    - target: {fileID: 9060852088710209080, guid: 61ca85ccc55b3d54d9417e77e19acd8b, type: 3}
+      propertyPath: jumpForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060852088710209080, guid: 61ca85ccc55b3d54d9417e77e19acd8b, type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

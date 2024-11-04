@@ -151,6 +151,10 @@ public class Player : MonoBehaviour
 
     private void CheckForHookInput()
     {
+        if (skill.hook.hookUnlocked == false)
+        {
+            return;
+        }
         if (canGrapple && currentHookPoint != null && Input.GetMouseButtonDown(0))
         {
             if (currentHookPoint != null)

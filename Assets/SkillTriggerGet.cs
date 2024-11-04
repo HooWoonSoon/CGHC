@@ -29,11 +29,17 @@ public class SkillTriggerGet : MonoBehaviour
                 skillManager.dash.UnlockDash();
                 Debug.Log("Dash is unlocked");
             }
-            else if (skillType == SkillType.Control && !skillManager.control.controlUnlocked)
+            else if (skillType == SkillType.ControlGravity && !skillManager.control.controlUnlocked)
             {
                 UnlockUiSkill(skillType);
                 skillManager.control.UnlockControl();
                 Debug.Log("Control is unlocked");
+            }
+            else if (skillType == SkillType.Hook && !skillManager.hook.hookUnlocked)
+            {
+                UnlockUiSkill(skillType);
+                skillManager.hook.UnlockControl();
+                Debug.Log("Hook is unlocked");
             }
         }
     }
