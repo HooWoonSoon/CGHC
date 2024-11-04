@@ -12,6 +12,8 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.Enter();
         rb.velocity = new Vector2(0, 0);
+        joint.enabled = false;
+        rope.enabled = false;
     }
 
     public override void Exit()

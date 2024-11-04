@@ -6,7 +6,7 @@ public class HookPoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = other.GetComponentInParent<Player>();
+        Player player = other.GetComponent<Player>();
         if (player != null)
         {
             playerInRange = true;
@@ -17,7 +17,7 @@ public class HookPoint : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        Player player = other.GetComponentInParent<Player>();
+        Player player = other.GetComponent<Player>();
         if (player != null)
         {
             playerInRange = false;

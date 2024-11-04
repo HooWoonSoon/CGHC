@@ -65,6 +65,10 @@ public class PlayerDeathHandler : MonoBehaviour
 
     private IEnumerator HandleDeathSequence()
     {
+        if (stateMachine != null && idleState != null)
+        {
+            stateMachine.ChangeState(idleState);
+        }
         yield return new WaitForSeconds(0.8f); 
 
         GameManager gameMangement = GameManager.instance;
@@ -84,10 +88,6 @@ public class PlayerDeathHandler : MonoBehaviour
 
         animator.Play("Idle");
 
-        if (stateMachine != null && idleState != null)
-        {
-            stateMachine.ChangeState(idleState);
-        }
 
         EnableControls();
 

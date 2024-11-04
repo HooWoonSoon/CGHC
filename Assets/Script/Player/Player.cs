@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
 
     private Vector3 grapplePoint;
     private HookPoint currentHookPoint = null;
-    private bool canGrapple = false;
+    public bool canGrapple { get; private set; } = false;
 
     [Header("Collision")]
     [SerializeField] private LayerMask colliderWithGround;
@@ -117,11 +117,11 @@ public class Player : MonoBehaviour
         capsulecollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
-        stateMachine.Initialize(idleState);
         //leftJump = maxJumps;
         ControlEffect.SetActive(false);
         joint = gameObject.GetComponent<DistanceJoint2D>();
         rope.enabled = false;
+        stateMachine.Initialize(idleState);
     }
 
     private void Update()

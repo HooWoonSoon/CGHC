@@ -22,7 +22,6 @@ public class SkillTriggerGet : MonoBehaviour
         if (player != null)
         {
             SkillManager skillManager = SkillManager.instance;
-
             if (skillType == SkillType.ControlGravity && !skillManager.control.controlUnlocked)
             {
                 UnlockUiSkill(skillType);
