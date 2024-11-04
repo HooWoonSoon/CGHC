@@ -45,7 +45,7 @@ public class PlayerGroundState : PlayerState
         {
             stateMachine.ChangeState(player.airState);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded && !player.isFloors)
+        if (Input.GetButtonDown("Jump") && player.isGrounded && !player.isFloors)
         {
             stateMachine.ChangeState(player.jumpState);
         }

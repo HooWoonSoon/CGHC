@@ -6,8 +6,8 @@ public class PlayerDeathHandler : MonoBehaviour
     public Animator animator; 
     private Rigidbody2D rb; 
     private AudioSource audioSource; 
-    public AudioClip deathSound; 
-    private bool isDead = false;
+    public AudioClip deathSound;
+    public bool isDead { get; private set; } = false;
     private PlayerStateMachine stateMachine;
     private PlayerIdleState idleState; 
 

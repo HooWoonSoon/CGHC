@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour
     [Header("Action")]
     public float moveSpeed = 2.5f;
     public float jumpForce = 2.5f;
+    public float maxJumpHoldTime = 0.2f;
 
     [Header("Double Jump")]
     public float extraJumpForce = 5f;
@@ -124,6 +126,11 @@ public class Player : MonoBehaviour
         stateMachine.Initialize(idleState);
     }
 
+    private void FixedUpdate()
+    {
+        stateMachine.currentState.FixeUpate();
+    }
+
     private void Update()
     {
         stateMachine.currentState.Update();
@@ -143,6 +150,7 @@ public class Player : MonoBehaviour
             }
         }
     }
+
     private void CheckForDoubleJumpInput()
     {
         if (skill.doubleJump.doubleJumpUnlock == false)
@@ -153,7 +161,7 @@ public class Player : MonoBehaviour
         {
             leftJump = extraJump;
         }
-        if (!isFloors && !isGrounded && Input.GetKeyDown(KeyCode.Space) && leftJump > 0)
+        if (!isFloors && !isGrounded && Input.GetButtonDown("Jump") && leftJump > 0)
         {
             if (stateMachine.currentState == airState || stateMachine.currentState == jumpState)
             {
@@ -336,7 +344,7 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < horizontalRayAmount; i++)
         {
-            Vector2 rayOrigin = Vector2.Lerp(startOrigin, endOrigin, (float)i / (horizontalRayAmount - 1));
+            Vector2 rayOrigin = Vector2.Lerp(new Vector2(startOrigin.x,startOrigin.y - skin), new Vector2(endOrigin.x, endOrigin.y + skin), (float)i / (horizontalRayAmount - 1));
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, direction, rayLength, colliderWithGround);
 
             Debug.DrawRay(rayOrigin, direction * rayLength, Color.yellow);
