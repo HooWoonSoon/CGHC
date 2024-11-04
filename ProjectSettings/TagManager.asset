@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Box
   - Button
+  - Interactable
   layers:
   - Default
   - TransparentFX
