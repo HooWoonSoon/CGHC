@@ -32861,7 +32861,7 @@ GameObject:
   - component: {fileID: 800480841}
   - component: {fileID: 800480840}
   - component: {fileID: 800480842}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: falling platform (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32992,8 +32992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3a315fe33c0c740919a0bda7fabece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallDelay: 2
-  respawnTime: 4
+  fallDelay: 1
+  respawnTime: 2
 --- !u!50 &800480842
 Rigidbody2D:
   serializedVersion: 4
@@ -33020,7 +33020,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1001 &807239214
 PrefabInstance:
   m_ObjectHideFlags: 0
