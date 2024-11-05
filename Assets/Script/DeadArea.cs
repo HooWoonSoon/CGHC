@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class DeadArea : MonoBehaviour
 {
-    private GameManager gameManager;
-
-    private void Start()
-    {
-        gameManager = GameManager.instance;
-    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         PlayerDeathHandler deathHandler = other.GetComponent<PlayerDeathHandler>();
@@ -19,7 +13,6 @@ public class DeadArea : MonoBehaviour
         if (deathHandler != null)
         {
             deathHandler.TriggerDeath();
-            gameManager.UpdateDead();
         }
         if (boxController != null)
         {

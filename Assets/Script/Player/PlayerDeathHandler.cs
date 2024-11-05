@@ -9,7 +9,8 @@ public class PlayerDeathHandler : MonoBehaviour
     public AudioClip deathSound;
     public bool isDead { get; private set; } = false;
     private PlayerStateMachine stateMachine;
-    private PlayerIdleState idleState; 
+    private PlayerIdleState idleState;
+    private GameManager gameManager;
 
     private MonoBehaviour[] controlScripts; 
 
@@ -18,6 +19,7 @@ public class PlayerDeathHandler : MonoBehaviour
         animator = transform.Find("character-sprite_0")?.GetComponent<Animator>() ?? animator;
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
+        gameManager = GameManager.instance;
 
         if (animator == null) Debug.LogError("Animator not found on 'character-sprite_0'.");
         if (rb == null) Debug.LogError("Rigidbody2D component not found on the player GameObject.");
@@ -43,6 +45,7 @@ public class PlayerDeathHandler : MonoBehaviour
         if (!isDead)
         {
             isDead = true;
+            gameManager.UpdateDead();
 
             DisableControls();
 
