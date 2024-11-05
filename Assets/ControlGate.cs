@@ -1,39 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ControlGate : MonoBehaviour
 {
-    [SerializeField] private List<AutoGate> autoGates;
-    [SerializeField] private List<Valves> valves;
-    private Rigidbody2D rb;
+    [SerializeField] private AutoGate autoGate;
+    private BoxCollider2D boxCollider;
+    private bool isOpen = false;
+    private Vector2 center;
+    private Vector2 size;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        boxCollider = GetComponent<BoxCollider2D>();
+        center = boxCollider.bounds.center;
+        size = boxCollider.bounds.size;
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void Update()
     {
-        BoxController controller = other.gameObject.GetComponent<BoxController>();
-        if (controller != null)
+        IsBoxDetected();
+        if (IsBoxDetected() && isOpen == false)
         {
-            foreach (var autoGate in autoGates)
-                autoGate.CloseOpenGate(true);
-            rb.isKinematic = true;
+            autoGate.CloseOpenGate(true);
+            isOpen = true;
+        }
+        else if (!IsBoxDetected() && isOpen == true)
+        {
+            autoGate.CloseOpenGate(false);
+            isOpen = false;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other)
+    private bool IsBoxDetected()
     {
-        BoxController controller = other.gameObject.GetComponent<BoxController>();
-        if (controller != null)
-        {
-            foreach (var autoGate in autoGates)
-                autoGate.CloseOpenGate(false);
-            rb.isKinematic = false;
-        }
+        return Physics2D.OverlapBoxAll(center, size, 0f).Any(collider => collider.GetComponent<BoxController>() != null);
     }
 }
