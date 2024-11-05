@@ -22,8 +22,6 @@ public class ControlGate : MonoBehaviour
         {
             foreach (var autoGate in autoGates)
                 autoGate.CloseOpenGate(true);
-            foreach (var valve in valves)
-                valve.swicthOn = true;
             rb.isKinematic = true;
         }
     }
@@ -35,8 +33,6 @@ public class ControlGate : MonoBehaviour
         {
             foreach (var autoGate in autoGates)
                 autoGate.CloseOpenGate(false);
-            foreach (var valve in valves)
-                valve.swicthOn = false;
             rb.isKinematic = false;
         }
     }

@@ -7,6 +7,7 @@ public class BoxState
     protected BoxStateMachine stateMachine;
     protected BoxController boxController;
     protected Rigidbody2D rb;
+    protected float stateTimer;
 
     public BoxState(BoxStateMachine _stateMachine, BoxController _pushable)
     {
@@ -27,7 +28,7 @@ public class BoxState
 
     public virtual void Update()
     {
-
+        stateTimer -= Time.deltaTime;
     }
 
     public virtual void FixeUpdate()

@@ -5,15 +5,15 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     private List<BoxController> boxs = new List<BoxController>();
-    private BoxCollider2D boxCollider2d;
+    private BoxCollider2D boxCollider;
     private Vector2 center;
     private Vector2 size;
 
     private void Start()
     {
-        boxCollider2d = GetComponent<BoxCollider2D>();
-        center = boxCollider2d.bounds.center;
-        size = boxCollider2d.bounds.size;
+        boxCollider = GetComponent<BoxCollider2D>();
+        center = boxCollider.bounds.center;
+        size = boxCollider.bounds.size;
         BoxsInRoom();
     }
 
@@ -61,8 +61,8 @@ public class RoomManager : MonoBehaviour
 
     private void RespawnBox(BoxController boxController)
     {
+        boxController.boxStateMachine.ChangeState(boxController.boxIdleState);
         boxController.transform.position = BoxData.instance.GetRepawnPosition(boxController.boxIndex);
         boxController.orientation = BoxData.instance.GetRepawnOrientation(boxController.boxIndex);
-        boxController.boxStateMachine.ChangeState(boxController.boxIdleState);
     }
 }

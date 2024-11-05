@@ -47,15 +47,18 @@ public class ElectricSpike : MonoBehaviour
 
     private bool Detected()
     {
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(movableSpike.transform.position, movableSpike.transform.localScale, 0);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(movableSpike.transform.position, movableSpike.transform.localScale * 1.1f, 0);
         foreach (Collider2D collider in colliders)
         {
             BoxController boxController = collider.GetComponent<BoxController>();
             PlayerDeathHandler deathHandler = collider.GetComponent<PlayerDeathHandler>();
             if (boxController != null)
             {
-                boxController.transform.SetParent(movableSpike.transform);
-                if (boxController.VasicouisDetected() == false)
+                if (boxController.VasicouisDetected())
+                {
+                    boxController.transform.SetParent(movableSpike.transform);
+                }
+                else if (boxController.VasicouisDetected() == false)
                 {
                     boxController.transform.SetParent(null);
                 }

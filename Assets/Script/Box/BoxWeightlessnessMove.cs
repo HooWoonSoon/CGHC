@@ -31,9 +31,11 @@ public class BoxWeightlessnessMove : BoxState
     public override void FixeUpdate()
     {
         base.FixeUpdate();
-        rb.MovePosition(boxController.transform.position + boxController.orientation * 3f * Time.deltaTime);
-        
-        if (boxController.VasicouisDetected())
+        if (!boxController.VasicouisDetected())
+        {
+            rb.MovePosition(boxController.transform.position + boxController.orientation * 3f * Time.deltaTime);
+        }
+        else if (boxController.VasicouisDetected())
         {
             stateMachine.ChangeState(boxController.boxIdleState);
         }

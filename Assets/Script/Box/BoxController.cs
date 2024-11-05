@@ -14,6 +14,7 @@ public class BoxController : MonoBehaviour
     [SerializeField] private Transform[] groundChecks;
     [SerializeField] private float checkDistance;
     [SerializeField] private LayerMask colliderWithGround;
+    [SerializeField] private LayerMask colliderWithVasicious;
     public Vector3 orientation = Vector3.down;
     private float skin = 0.05f;
     #endregion
@@ -131,7 +132,7 @@ public class BoxController : MonoBehaviour
     {
         foreach (Transform check in vasicoisChecks)
         {
-            if (Physics2D.Raycast(check.position, orientation, checkDistance, colliderWithGround))
+            if (Physics2D.Raycast(check.position, orientation, checkDistance, colliderWithVasicious))
                 return true;
         }
         return false;
