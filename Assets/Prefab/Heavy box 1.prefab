@@ -422,7 +422,10 @@ MonoBehaviour:
   colliderWithGround:
     serializedVersion: 2
     m_Bits: 8
-  orentaition: {x: 0, y: -1, z: 0}
+  colliderWithVasicious:
+    serializedVersion: 2
+    m_Bits: 264
+  orientation: {x: 0, y: -1, z: 0}
   changeMt: {fileID: -876546973899608171, guid: 819b34ef40c106043a6316b26fe18812, type: 3}
   canPush: 0
   pointer: {fileID: 4467218736783311117}

@@ -183,7 +183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7391071428854016643}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.492, y: -6.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -290,7 +290,10 @@ MonoBehaviour:
   colliderWithGround:
     serializedVersion: 2
     m_Bits: 8
-  orentaition: {x: 0, y: -1, z: 0}
+  colliderWithVasicious:
+    serializedVersion: 2
+    m_Bits: 264
+  orientation: {x: 0, y: -1, z: 0}
   changeMt: {fileID: -876546973899608171, guid: 819b34ef40c106043a6316b26fe18812, type: 3}
   canPush: 1
   pointer: {fileID: 6729261701844121067}
