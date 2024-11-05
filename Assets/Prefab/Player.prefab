@@ -9949,6 +9949,7 @@ GameObject:
   - component: {fileID: 7815313615688546002}
   - component: {fileID: 4974109183538113795}
   - component: {fileID: 1075192094539918250}
+  - component: {fileID: 8702632766226988233}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -9988,11 +9989,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30a2524107d615d4595fbcf084d70dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  jumpForce: 7
-  maxJumps: 1
-  leftJump: 0
-  dashSpeed: 14
+  moveSpeed: 5
+  jumpForce: 5.6
+  maxJumpHoldTime: 0.5
+  extraJumpForce: 7
+  extraJump: 1
+  dashSpeed: 20
   dashDuration: 0.2
   isDash: 0
   grappleLength: 5
@@ -10009,7 +10011,7 @@ MonoBehaviour:
   verticalRayAmount: 4
   horizontalRayAmount: 4
   gravityControlCheck: {fileID: 3411368132916858256}
-  gravityControlCheckRadius: 2.85
+  gravityControlCheckRadius: 3.5
   pushControlCheck: {fileID: 4130952606917245301}
   pushCheckDistance: 0.08
   exitPushCheck: {fileID: 337632854924595131}
@@ -10043,7 +10045,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &218818362558657571
 CapsuleCollider2D:
@@ -10223,6 +10225,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8702632766226988233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6908922121998028422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf933ffbe744a34c8ed91ef0fc38ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8777292415395331940
 GameObject:
   m_ObjectHideFlags: 0

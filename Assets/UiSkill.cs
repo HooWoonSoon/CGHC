@@ -50,15 +50,15 @@ public class UiSkill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
     {
         skillToolTip.ShowToolTip(skillName,skillDescription);
 
-        Vector2 mousePosition = Input.mousePosition;
+        //Vector2 mousePosition = Input.mousePosition;
 
-        float xOffset = 0;
-        if (mousePosition.x > 600)
-            xOffset = -150;
-        else
-            xOffset = 150;
+        //float xOffset = 0;
+        //if (mousePosition.x > 600)
+        //    xOffset = -150;
+        //else
+        //    xOffset = 150;
 
-        skillToolTip.transform.position = new Vector2(mousePosition.x + xOffset, mousePosition.y - 100);
+        //skillToolTip.transform.position = new Vector2(mousePosition.x + xOffset, mousePosition.y - 100);
     }
 
     public void OnPointerExit(PointerEventData eventData)

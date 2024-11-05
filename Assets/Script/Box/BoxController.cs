@@ -1,10 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Dynamic;
-using Unity.VisualScripting;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class BoxController : MonoBehaviour
 {

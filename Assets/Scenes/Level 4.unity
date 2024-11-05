@@ -64769,6 +64769,7 @@ GameObject:
   - component: {fileID: 837711267}
   - component: {fileID: 837711266}
   - component: {fileID: 837711265}
+  - component: {fileID: 837711269}
   m_Layer: 0
   m_Name: Skill Manager
   m_TagString: Untagged
@@ -64816,7 +64817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0465308223d6b214e87721f53331ca81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlUnlocked: 0
+  controlUnlocked: 1
 --- !u!114 &837711267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64829,7 +64830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a546c51cb0ace46b7e48b3c9d45b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashUnlocked: 0
+  dashUnlocked: 1
 --- !u!114 &837711268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64842,9 +64843,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eede9eee1c2106b4faf22881bcabf38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dash: {fileID: 0}
   control: {fileID: 0}
+  doubleJump: {fileID: 0}
+  dash: {fileID: 0}
   hook: {fileID: 0}
+--- !u!114 &837711269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837711263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9afc95e05618b74382dda38dfede651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doubleJumpUnlock: 1
 --- !u!1001 &840537561
 PrefabInstance:
   m_ObjectHideFlags: 0
