@@ -8,11 +8,13 @@ public class BoxInfo
     protected float distance;
     protected int index;
     protected Vector2 generatedPoint;
-    public BoxInfo(bool _canPush, Vector2 _generatedPoint, int _index)
+    protected Vector3 spawnsOrientation;
+    public BoxInfo(bool _canPush, Vector2 _generatedPoint, int _index, Vector3 _spawnsOrientation)
     {
         canPush = _canPush;
         generatedPoint = _generatedPoint;
         index = _index;
+        spawnsOrientation = _spawnsOrientation;
     }
 
     //public void Distance(float _distance, int Index)
@@ -23,6 +25,11 @@ public class BoxInfo
     public Vector2 RepawnPoint
     {
         get { return generatedPoint; }
+    }
+
+    public Vector3 RepawnOrientation
+    {
+        get { return spawnsOrientation; }
     }
 
     public override string ToString()

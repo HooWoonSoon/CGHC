@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -11,9 +12,12 @@ public class Player : MonoBehaviour
     [Header("Action")]
     public float moveSpeed = 2.5f;
     public float jumpForce = 2.5f;
-    public int maxJumps = 1;
-    public int leftJump;
-    private bool canDoubleJump;
+    public float maxJumpHoldTime = 0.2f;
+
+    [Header("Double Jump")]
+    public float extraJumpForce = 5f;
+    [SerializeField] private int extraJump = 1;
+    private int leftJump;
 
     [Header("Dash")]
     public float dashSpeed;
@@ -30,7 +34,7 @@ public class Player : MonoBehaviour
 
     private Vector3 grapplePoint;
     private HookPoint currentHookPoint = null;
-    private bool canGrapple = false;
+    public bool canGrapple { get; private set; } = false;
 
     [Header("Collision")]
     [SerializeField] private LayerMask colliderWithGround;
@@ -65,6 +69,7 @@ public class Player : MonoBehaviour
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
+    public PlayerDoubleJump doubleJump { get; private set; }
     public PlayerAirState airState { get; private set; }
     public PlayerDashState dashState { get; private set; }
     public PlayerWallSlideState wallSlideState { get; private set; }
@@ -98,6 +103,7 @@ public class Player : MonoBehaviour
         idleState = new PlayerIdleState(stateMachine, this, "Idle");
         moveState = new PlayerMoveState(stateMachine, this, "Move");
         jumpState = new PlayerJumpState(stateMachine, this, "Jump");
+        doubleJump = new PlayerDoubleJump(stateMachine, this, "Jump");
         airState = new PlayerAirState(stateMachine, this, "Jump");
         dashState = new PlayerDashState(stateMachine, this, "Dash");
         wallSlideState = new PlayerWallSlideState(stateMachine, this, "WallSlide");
@@ -113,11 +119,16 @@ public class Player : MonoBehaviour
         capsulecollider = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
-        stateMachine.Initialize(idleState);
-        leftJump = maxJumps;
+        //leftJump = maxJumps;
         ControlEffect.SetActive(false);
         joint = gameObject.GetComponent<DistanceJoint2D>();
         rope.enabled = false;
+        stateMachine.Initialize(idleState);
+    }
+
+    private void FixedUpdate()
+    {
+        stateMachine.currentState.FixeUpate();
     }
 
     private void Update()
@@ -126,6 +137,7 @@ public class Player : MonoBehaviour
 
         CheckForDashInput();
         CheckForHookInput();
+        CheckForDoubleJumpInput();
         SetRayOrigins();
         CollisionBelowAndAbove();
         BoxGravityControlDetected();
@@ -137,36 +149,26 @@ public class Player : MonoBehaviour
                 previousBox.GravityOrientation(false); // I give up even if GPT also couldn't help
             }
         }
-        if (Input.GetButtonDown("Jump"))
-        {
-            if (isGrounded)
-            {
-                Jump();
-                leftJump = maxJumps - 1; // Reset available jumps when grounded
-            }
-            else if (leftJump > 0)
-            {
-                Jump(); // Perform the jump
-                leftJump--; // Decrement the remaining jumps
-            }
-        }
-
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-        }
     }
 
-    private void Jump()
+    private void CheckForDoubleJumpInput()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-    }
-
-    public void SetMaxJumps(int jumps)
-    {
-        maxJumps = jumps;       // Set maximum jumps
-        leftJump = jumps;       // Reset the available jumps to the new max
-        Debug.Log("Max jumps set to: " + maxJumps);
+        if (skill.doubleJump.doubleJumpUnlock == false)
+        {
+            return;
+        }
+        if (isGrounded == true)
+        {
+            leftJump = extraJump;
+        }
+        if (!isFloors && !isGrounded && Input.GetButtonDown("Jump") && leftJump > 0)
+        {
+            if (stateMachine.currentState == airState || stateMachine.currentState == jumpState)
+            {
+                leftJump -= 1;
+                stateMachine.ChangeState(doubleJump);
+            }
+        }
     }
 
     public void SetCurrentHook(HookPoint hookPoint)
@@ -181,6 +183,10 @@ public class Player : MonoBehaviour
 
     private void CheckForHookInput()
     {
+        if (skill.hook.hookUnlocked == false)
+        {
+            return;
+        }
         if (canGrapple && currentHookPoint != null && Input.GetMouseButtonDown(0))
         {
             if (currentHookPoint != null)
@@ -202,6 +208,10 @@ public class Player : MonoBehaviour
 
     public void ApplySwingForce()
     {
+        if (skill.hook.hookUnlocked == false)
+        {
+            return;
+        }
         if (Input.GetKey(KeyCode.D))
         {
             Debug.Log("clockwise");
@@ -214,17 +224,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void CheckForJumpCount(bool IsGround)
-    {
-        if (IsGround)
-        {
-            leftJump = maxJumps;
-        }
-        else
-        {
-            leftJump -= 1;
-        }
-    }
+    //public void CheckForJumpCount(bool IsGround)
+    //{
+    //    if (IsGround)
+    //    {
+    //        leftJump = maxJumps;
+    //    }
+    //    else
+    //    {
+    //        leftJump -= 1;
+    //    }
+    //}
 
     private void CheckForDashInput()
     {
@@ -281,10 +291,10 @@ public class Player : MonoBehaviour
         switch (rb.velocity.y)
         {
             case < -0.01f:
-                bottomRayLength += 0.1f;
+                bottomRayLength += skin;
                 break;
             case > 0.01f:
-                aboveRayLength += 0.1f;
+                aboveRayLength += skin;
                 break;
         }
         this.isGrounded = CheckCollision(-transform.up, bottomRayLength, Color.green, out bool isGrounded);
@@ -334,7 +344,7 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < horizontalRayAmount; i++)
         {
-            Vector2 rayOrigin = Vector2.Lerp(startOrigin, endOrigin, (float)i / (horizontalRayAmount - 1));
+            Vector2 rayOrigin = Vector2.Lerp(new Vector2(startOrigin.x,startOrigin.y - skin), new Vector2(endOrigin.x, endOrigin.y + skin), (float)i / (horizontalRayAmount - 1));
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, direction, rayLength, colliderWithGround);
 
             Debug.DrawRay(rayOrigin, direction * rayLength, Color.yellow);
@@ -387,11 +397,6 @@ public class Player : MonoBehaviour
             }
         }
         return boxController != null;
-    }
-
-    public void KillPlayer()
-    {
-        Debug.Log("Kill Player");
     }
 
     #region Flip

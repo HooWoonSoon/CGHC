@@ -11,11 +11,11 @@ public class PlayerState
     protected LineRenderer rope;
 
     protected float horizontal;
-    protected float jump;
     private string animBoolName;
     protected float stateTimer;
     protected bool triggerCalled;
     protected int boxIndex;
+
     public PlayerState(PlayerStateMachine _stateMachine, Player _player, string _animBoolName)
     {
         this.stateMachine = _stateMachine;
@@ -29,6 +29,7 @@ public class PlayerState
         player.anim.SetBool(animBoolName, true);
         joint = player.joint;
         rope = player.rope;
+
         //Debug.Log("i am in" + stateMachine.currentState);
         triggerCalled = false;
     }
@@ -37,8 +38,12 @@ public class PlayerState
     {
         stateTimer -= Time.deltaTime;
         horizontal = Input.GetAxisRaw("Horizontal");
-        jump = Input.GetAxisRaw("Jump");
         player.anim.SetFloat("yVelocity", rb.velocity.y);
+    }
+
+    public virtual void FixeUpate()
+    {
+        stateTimer -= Time.deltaTime;
     }
 
     public virtual void Exit()

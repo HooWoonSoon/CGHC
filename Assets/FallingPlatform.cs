@@ -3,29 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 public class FallingPlatform : MonoBehaviour
 {
-    Rigidbody2D rb2d;
-    Vector2 defaultPos;
-    [SerializeField] float fallDelay, respawnTime;
+    private Rigidbody2D rb;
+    private BoxCollider2D boxCollider2D;
+    private Vector2 defaultPos;
+    [SerializeField] private float fallDelay = 1f;
+    [SerializeField] private float respawnTime = 2f;
+    private Coroutine dropCoroutine;
 
     void Start()
     {
         defaultPos = transform.position;
-        rb2d = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
         Player player = PlayerManager.instance.player;
-        if (player != null) 
+
+        if (player != null)
         {
-            StartCoroutine("PlatformDrop");
+            if (dropCoroutine != null)
+            {
+                StopCoroutine(dropCoroutine);
+            }
+            dropCoroutine = StartCoroutine(PlatformDrop());
         }
     }
 
-    IEnumerator PlatformDrop()
+    private IEnumerator PlatformDrop()
     {
         yield return new WaitForSeconds(fallDelay);
-        rb2d.bodyType = RigidbodyType2D.Dynamic;
+        rb.bodyType = RigidbodyType2D.Dynamic;  
         yield return new WaitForSeconds(respawnTime);
+        ResetPlatform();
+    }
+
+    private void ResetPlatform()
+    {
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.velocity = Vector2.zero;  
+        transform.position = defaultPos;  
+        dropCoroutine = null; 
     }
 }

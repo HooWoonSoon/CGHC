@@ -1,48 +1,60 @@
 using System.Collections;
 using UnityEngine;
 
-public class AutoTurret : MonoBehaviour
+public class Turret : MonoBehaviour
 {
     public GameObject projectilePrefab; 
-    public Transform firePoint; 
-    public float fireRate = 2.0f; 
-    private Transform player; 
+    public Transform shootPoint; 
+    public float shootInterval = 2.0f; 
+    public float detectionRange = 10.0f; 
+    private bool isPlayerNearby = false;
+    private Transform player;
+    private Animator animator;
 
     private void Start()
     {
-        player = PlayerManager.instance.player.transform; 
-        StartCoroutine(FireCoroutine()); 
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (player != null)
+        DetectPlayer();
+
+        if (isPlayerNearby && !IsInvoking(nameof(ShootProjectile)))
         {
-            Vector3 direction = player.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            InvokeRepeating(nameof(ShootProjectile), 0f, shootInterval);
+        }
+        else if (!isPlayerNearby)
+        {
+            CancelInvoke(nameof(ShootProjectile));
         }
     }
 
-    IEnumerator FireCoroutine()
+    private void DetectPlayer()
     {
-        while (true)
+        if (player == null)
         {
-            yield return new WaitForSeconds(fireRate);
-            Fire();
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        }
+
+        if (player != null)
+        {
+            float distance = Vector2.Distance(transform.position, player.position);
+            isPlayerNearby = distance <= detectionRange;
         }
     }
 
-    void Fire()
+    private void ShootProjectile()
     {
-        if (player != null)
+        if (player != null && animator != null)
         {
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-            ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
+            animator.SetTrigger("Shoot"); 
+            GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
+            Projectile projScript = projectile.GetComponent<Projectile>();
 
-            if (projectileController != null)
+            if (projScript != null)
             {
-                projectileController.SetDirection((player.position - firePoint.position).normalized);
+                projScript.SetTarget(player);
             }
         }
     }

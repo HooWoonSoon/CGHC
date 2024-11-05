@@ -4,10 +4,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public enum SkillType
+{
+    Dash,
+    ControlGravity,
+    DoubleJump,
+    Hook,
+}
+
 public class UiSkill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IsSaveManager
 {
     private Image skillImage;
-    private UISkillToolTip skillToolTip;
+    [SerializeField] private UISkillToolTip skillToolTip;
+    [SerializeField] private SkillType skillType; 
     [SerializeField] private string skillName;
     [TextArea]
     [SerializeField] private string skillDescription;
@@ -17,16 +26,24 @@ public class UiSkill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
     {
         gameObject.name = "UiSkill - " + skillName;
     }
-    private void Start()
+
+    private void OnEnable()
     {
         skillImage = GetComponent<Image>();
-        skillToolTip = FindObjectOfType<UISkillToolTip>();
         UpdateSkillVisual();
     }
 
     private void UpdateSkillVisual()
     {
         skillImage.color = unlocked ? Color.white : Color.gray;
+    }
+
+    public SkillType GetSkillType() => skillType;  
+
+    public void Unlock()
+    {
+        unlocked = true;
+        UpdateSkillVisual();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

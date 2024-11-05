@@ -14,7 +14,8 @@ public class BoxController : MonoBehaviour
     [SerializeField] private Transform[] groundChecks;
     [SerializeField] private float checkDistance;
     [SerializeField] private LayerMask colliderWithGround;
-    public Vector3 orentaition = Vector3.down;
+    [SerializeField] private LayerMask colliderWithVasicious;
+    public Vector3 orientation = Vector3.down;
     private float skin = 0.05f;
     #endregion
 
@@ -63,6 +64,7 @@ public class BoxController : MonoBehaviour
     public void Update()
     {
         boxStateMachine.currentState.Update();
+        ChangeVasicoisTranform();
     }
 
     private void FixedUpdate()
@@ -89,22 +91,22 @@ public class BoxController : MonoBehaviour
         Vector3 boundsTopRightSide = new Vector3(boxBounds.max.x, boxBounds.max.y - skin * 2, 0f);
         Vector3 boundsBottomRightSide = new Vector3(boxBounds.max.x, boxBounds.min.y + skin * 2, 0f);
 
-        if (orentaition == Vector3.down)
+        if (orientation == Vector3.down)
         {
             vasicoisChecks[0].transform.position = boundsBottomLeft;
             vasicoisChecks[1].transform.position = boundsBottomRight;
         }
-        else if (orentaition == Vector3.up)
+        else if (orientation == Vector3.up)
         {
             vasicoisChecks[0].transform.position = boundsTopLeft;
             vasicoisChecks[1].transform.position = boundsTopRight;
         }
-        else if (orentaition == Vector3.left)
+        else if (orientation == Vector3.left)
         {
             vasicoisChecks[0].transform.position = boundsTopLeftSide;
             vasicoisChecks[1].transform.position = boundsBottomLeftSide;
         }
-        else if (orentaition == Vector3.right)
+        else if (orientation == Vector3.right)
         {
             vasicoisChecks[0].transform.position = boundsTopRightSide;
             vasicoisChecks[1].transform.position = boundsBottomRightSide;
@@ -130,7 +132,7 @@ public class BoxController : MonoBehaviour
     {
         foreach (Transform check in vasicoisChecks)
         {
-            if (Physics2D.Raycast(check.position, orentaition, checkDistance, colliderWithGround))
+            if (Physics2D.Raycast(check.position, orientation, checkDistance, colliderWithVasicious))
                 return true;
         }
         return false;
@@ -184,7 +186,7 @@ public class BoxController : MonoBehaviour
         foreach (Transform check in vasicoisChecks)
         {
             Gizmos.color = Color.yellow;
-            Debug.DrawRay(check.position, orentaition * checkDistance, Color.red);
+            Debug.DrawRay(check.position, orientation * checkDistance, Color.red);
         }
         foreach (Transform check in groundChecks)
         {

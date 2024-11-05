@@ -11,6 +11,7 @@ public class BoxIdleState : BoxState
     public override void Enter()
     {
         base.Enter();
+        stateTimer = 0.1f;
         rb.isKinematic = true;
         rb.velocity = Vector2.zero;
     }

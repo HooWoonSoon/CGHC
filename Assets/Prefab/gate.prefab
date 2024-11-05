@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6472956300037564421}
   - component: {fileID: 1843988526956918004}
   m_Layer: 0
-  m_Name: Gate
+  m_Name: gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderAbove: {fileID: 8587471740803182126}
-  collilderBottom: {fileID: 8037379243057488951}
+  colliderBottom: {fileID: 8037379243057488951}
   openDuration: 1
 --- !u!1 &4618545626074491811
 GameObject:
@@ -145,7 +145,7 @@ Animator:
   m_GameObject: {fileID: 4618545626074491811}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4f094265701200248a8d3f3958a6cdb4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

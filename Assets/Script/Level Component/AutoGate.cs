@@ -44,7 +44,7 @@ public class AutoGate : MonoBehaviour
 
     private void Update()
     {
-        if (!isAnimating) return; // 动画未进行时退出更新
+        if (!isAnimating) return;
 
         elapsedTime += Time.deltaTime;
         float time = Mathf.Clamp01(elapsedTime / openDuration);

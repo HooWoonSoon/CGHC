@@ -1,28 +1,42 @@
 using UnityEngine;
 
-public class ProjectileController : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
-    public float speed = 10.0f;
-    private Vector2 moveDirection;
+    public float speed = 5.0f; // Speed of the projectile
+    private Transform target;
+    public float destroyAfter = 5.0f; // Time before the projectile self-destructs
 
-    public void SetDirection(Vector2 direction)
+    private void Start()
     {
-        moveDirection = direction;
+        Destroy(gameObject, destroyAfter); // Destroy after a set time to prevent endless flying
     }
 
     private void Update()
     {
-        transform.Translate(moveDirection * speed * Time.deltaTime, Space.World);
+        if (target != null)
+        {
+            Vector2 direction = (target.position - transform.position).normalized;
+            transform.position += (Vector3)direction * speed * Time.deltaTime;
+        }
+    }
+
+    public void SetTarget(Transform player)
+    {
+        target = player;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        // Check if the collision object is not the player
+        if (!collision.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // Destroy the projectile on collision with any non-player object
         }
-        else if (collision.gameObject.CompareTag("Player"))
+
+        // If the projectile hits the player, trigger the death handler and destroy the projectile
+        if (collision.gameObject.CompareTag("Player"))
         {
+            collision.gameObject.GetComponent<PlayerDeathHandler>()?.TriggerDeath();
             Destroy(gameObject);
         }
     }

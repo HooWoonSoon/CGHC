@@ -13,7 +13,6 @@ public class PlayerGroundState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        player.CheckForJumpCount(true);
     }
 
     public override void Exit()
@@ -46,7 +45,7 @@ public class PlayerGroundState : PlayerState
         {
             stateMachine.ChangeState(player.airState);
         }
-        if (jump > 0 && player.isGrounded)
+        if (Input.GetButtonDown("Jump") && player.isGrounded && !player.isFloors)
         {
             stateMachine.ChangeState(player.jumpState);
         }

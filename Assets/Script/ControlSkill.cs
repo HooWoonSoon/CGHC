@@ -7,7 +7,7 @@ public class ControlSkill : Skill
     [Header("Control")]
     public bool controlUnlocked;
 
-    public void UnlockDash()
+    public void UnlockControl()
     {
         controlUnlocked = true;
     }

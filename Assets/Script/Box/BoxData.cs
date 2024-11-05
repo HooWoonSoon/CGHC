@@ -17,20 +17,20 @@ public class BoxData
         boxList = new List<BoxInfo>();
     }
 
-    public void AddBox(bool canPush, Vector2 generatedPoint, int index)
+    public void AddBox(bool canPush, Vector2 generatedPoint, int index, Vector3 spawnOrientation)
     {
-        var newBox = new BoxInfo(canPush, generatedPoint, index);
+        var newBox = new BoxInfo(canPush, generatedPoint, index, spawnOrientation);
         boxList.Add(newBox);
     }
-
-    //public void UpdateDistance(float distance, int index)
-    //{
-    //    boxList[index].Distance(distance, index);
-    //}
 
     public Vector2 GetRepawnPosition(int index)
     {
         return boxList[index].RepawnPoint;
+    }
+
+    public Vector3 GetRepawnOrientation(int index)
+    {
+        return boxList[index].RepawnOrientation;
     }
 
     public void CheckList()

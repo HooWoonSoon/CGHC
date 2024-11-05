@@ -6,8 +6,10 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
 
-    public DashSkill dash;
     public ControlSkill control;
+    public DoubleJumpSkill doubleJump;
+    public DashSkill dash;
+    public HookSkill hook;
     private void Awake()
     {
         if (instance != null) 
@@ -20,5 +22,7 @@ public class SkillManager : MonoBehaviour
     {
         dash = GetComponent<DashSkill>();
         control = GetComponent<ControlSkill>();
+        hook = GetComponent<HookSkill>();
+        doubleJump = GetComponent<DoubleJumpSkill>();
     }
 }
