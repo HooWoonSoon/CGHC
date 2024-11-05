@@ -6767,7 +6767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36fa47cb578d6814db7f2efd7bd93ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Level 1
+  sceneName: Level 3
   promptImage: {fileID: 1314735003}
   fadeImage: {fileID: 798799662}
 --- !u!61 &907857671
