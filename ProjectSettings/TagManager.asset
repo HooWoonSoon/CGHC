@@ -57,3 +57,6 @@ TagManager:
   - name: Pointer
     uniqueID: 3960775509
     locked: 0
+  - name: Effect
+    uniqueID: 803867025
+    locked: 0

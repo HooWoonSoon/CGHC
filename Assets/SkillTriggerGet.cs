@@ -6,7 +6,11 @@ public class SkillTriggerGet : MonoBehaviour
 {
     [SerializeField] private List<UiSkill> uiSkills;
     [SerializeField] private GameObject key;
+    [SerializeField] private GameObject particle;
     [SerializeField] private SkillType skillType;
+    [SerializeField] private float circleRange = 5;
+    [SerializeField] private int spawnsCount = 20;
+    private bool activated = false;
     private bool playerInRange = false; // Flag to track if player is in range
 
     private void Start()
@@ -19,19 +23,17 @@ public class SkillTriggerGet : MonoBehaviour
 
     private void Update()
     {
-        // Check if player is in range and presses "E" to unlock the skill
-        if (playerInRange)
+        if (playerInRange && activated == false)
         {
             key.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
                 UnlockSkill();
+                SpawnObject();
             }
         }
         else
-        {
             key.SetActive(false);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -62,26 +64,42 @@ public class SkillTriggerGet : MonoBehaviour
         {
             UnlockUiSkill(skillType);
             skillManager.control.UnlockControl();
-            Debug.Log("Control is unlocked");
         }
         else if (skillType == SkillType.DoubleJump && !skillManager.doubleJump.doubleJumpUnlock)
         {
             UnlockUiSkill(skillType);
             skillManager.doubleJump.UnlockDoubleJump();
-            Debug.Log("Double Jump is unlocked");
         }
         else if (skillType == SkillType.Dash && !skillManager.dash.dashUnlocked)
         {
             UnlockUiSkill(skillType);
             skillManager.dash.UnlockDash();
-            Debug.Log("Dash is unlocked");
         }
         else if (skillType == SkillType.Hook && !skillManager.hook.hookUnlocked)
         {
             UnlockUiSkill(skillType);
             skillManager.hook.UnlockControl();
-            Debug.Log("Hook is unlocked");
         }
+
+        activated = true;
+    }
+
+    private void SpawnObject()
+    {
+        for (int i = 0; i < spawnsCount; i++)
+        {
+            Instantiate(particle, RandomVector2InCircleRange(), Quaternion.identity);
+        }
+    }
+
+    private Vector2 RandomVector2InCircleRange()
+    {
+        float angle = Random.Range(0f, Mathf.PI * 2);
+        float distance = Random.Range(0, circleRange);
+        float x = Mathf.Cos(angle) * distance;
+        float y = Mathf.Sin(angle) * distance;
+
+        return new Vector2(transform.position.x + x, transform.position.y + y);
     }
 
     private void UnlockUiSkill(SkillType skillType)
@@ -94,5 +112,10 @@ public class SkillTriggerGet : MonoBehaviour
                 return;
             }
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, circleRange);
     }
 }

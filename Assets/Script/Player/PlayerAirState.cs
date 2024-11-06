@@ -11,7 +11,6 @@ public class PlayerAirState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        stateTimer = 0.1f;
     }
 
     public override void Exit()
@@ -30,7 +29,7 @@ public class PlayerAirState : PlayerState
         {
             stateMachine.ChangeState(player.idleState);
         }
-        if (horizontal != 0 && stateTimer <= 0)
+        if (horizontal != 0)
         {
             player.SetVelocity(player.moveSpeed * horizontal, rb.velocity.y);
         }
